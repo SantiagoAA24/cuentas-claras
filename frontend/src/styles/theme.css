@@ -87,6 +87,8 @@
   --spacing-navbar: 72px;
   --spacing-fab: 64px;
   --spacing-gutter: 16px;    /* margen lateral de pantalla */
+  /* Holgura del panel de pedido colapsado (TabsLayout ya reserva la navbar) */
+  --spacing-panel-pedido: 104px;
   --spacing-switch: 52px;    /* ancho de la pista del interruptor · alto radio-list */
   --spacing-switch-h: 32px;  /* alto de la pista */
   --spacing-switch-pad: 3px; /* padding horizontal de la pista */

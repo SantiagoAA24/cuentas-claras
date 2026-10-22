@@ -1,26 +1,36 @@
 import { lazy, Suspense } from 'react'
-import { Route, Routes } from 'react-router'
+import { Navigate, Route, Routes } from 'react-router'
+import { GuestOnly } from './app/GuestOnly'
+import { RequireAuth } from './app/RequireAuth'
+import { ROUTES } from './app/routes'
 import { AppShell } from './components/AppShell'
+import { LoginPage } from './features/auth/pages/LoginPage'
+import { ConfiguracionPage } from './features/configuracion/pages/ConfiguracionPage'
+import { ImpresoraPage } from './features/configuracion/pages/ImpresoraPage'
+import { DetalleVentaPage } from './features/historial/pages/DetalleVentaPage'
+import { HistorialPage } from './features/historial/pages/HistorialPage'
+import { ProductosPage } from './features/productos/pages/ProductosPage'
+import { VenderPage } from './features/ventas/pages/VenderPage'
+import { StackLayout } from './layouts/StackLayout'
+import { TabsLayout } from './layouts/TabsLayout'
+import { NotFoundPage } from './pages/NotFoundPage'
 
 const UiKitPage = import.meta.env.DEV
   ? lazy(() => import('./pages/dev/UiKitPage'))
   : null
 
-function HomePage() {
-  return (
-    <AppShell>
-      <h1>Cuentas Claras</h1>
-    </AppShell>
-  )
-}
-
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<Navigate to={ROUTES.vender} replace />} />
+
+      <Route element={<GuestOnly />}>
+        <Route path={ROUTES.login} element={<LoginPage />} />
+      </Route>
+
       {UiKitPage ? (
         <Route
-          path="/dev/ui"
+          path={ROUTES.devUi}
           element={
             <Suspense fallback={null}>
               <UiKitPage />
@@ -28,6 +38,27 @@ function App() {
           }
         />
       ) : null}
+
+      <Route element={<RequireAuth />}>
+        <Route element={<AppShell />}>
+          <Route element={<TabsLayout />}>
+            <Route path={ROUTES.vender} element={<VenderPage />} />
+            <Route path={ROUTES.historial} element={<HistorialPage />} />
+            <Route path={ROUTES.productos} element={<ProductosPage />} />
+          </Route>
+
+          <Route element={<StackLayout />}>
+            <Route
+              path={`${ROUTES.historial}/:id`}
+              element={<DetalleVentaPage />}
+            />
+            <Route path={ROUTES.configuracion} element={<ConfiguracionPage />} />
+            <Route path={ROUTES.impresora} element={<ImpresoraPage />} />
+          </Route>
+        </Route>
+      </Route>
+
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
 }

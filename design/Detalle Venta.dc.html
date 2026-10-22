@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet">
+<style>
+body{margin:0;background:#EFE6D6;color:#2B1D12;font-family:'Nunito',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#7A4A1F}a:hover{color:#2B1D12}
+.material-symbols-rounded{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga'}
+button{-webkit-tap-highlight-color:transparent}
+input::placeholder{color:#9C8A76}
+</style>
+</helmet>
+<section style="padding:48px;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+<sc-for list="{{ frames }}" as="f" hint-placeholder-count="3">
+  <div id="{{ f.id }}" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="height:28px;padding:0 10px;border-radius:8px;background:#5A3414;color:#FFC72C;font:800 14px 'JetBrains Mono',monospace;display:flex;align-items:center">{{ f.id }}</span>
+      <span style="font-size:17px;font-weight:800;color:#5A3414">{{ f.title }}</span>
+    </div>
+
+    <div style="position:relative;width:390px;height:844px;background:#FFF8EC;border-radius:32px;overflow:hidden;box-shadow:0 12px 40px rgba(90,52,20,.22);display:flex;flex-direction:column">
+      <div style="height:28px;flex-shrink:0;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:13px;font-weight:800">
+        <span>12:52</span>
+        <span style="display:flex;gap:4px"><span class="material-symbols-rounded" style="font-size:16px">signal_cellular_alt</span><span class="material-symbols-rounded" style="font-size:16px">wifi</span><span class="material-symbols-rounded" style="font-size:16px">battery_5_bar</span></span>
+      </div>
+      <div style="height:64px;flex-shrink:0;background:#fff;display:flex;align-items:center;gap:4px;padding:0 8px;border-bottom:1px solid #EFE3CF">
+        <button style="width:48px;height:48px;border:0;border-radius:12px;background:transparent;color:#5A3414;display:flex;align-items:center;justify-content:center;cursor:pointer" style-active="background:#F6ECDD"><span class="material-symbols-rounded" style="font-size:28px">arrow_back</span></button>
+        <span style="font-size:20px;font-weight:900;color:#5A3414">Detalle de venta</span>
+      </div>
+
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:16px 16px 104px;display:flex;flex-direction:column;gap:12px;scrollbar-width:none">
+        <sc-if value="{{ f.voided }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FBE6E4;border:2px solid #C0322B;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px">
+            <span style="display:flex;align-items:center;gap:8px"><span style="height:30px;padding:0 12px;border-radius:999px;background:#C0322B;color:#fff;font-size:15px;font-weight:900;display:inline-flex;align-items:center;gap:6px"><span class="material-symbols-rounded" style="font-size:18px">block</span>Anulada</span></span>
+            <span style="font-size:17px;font-weight:800;color:#2B1D12">Motivo: {{ f.reasonText }}</span>
+            <span style="font-size:15px;font-weight:700;color:#8E1F19">Anulada por {{ f.voidedBy }} · {{ f.voidedAt }}</span>
+          </div>
+        </sc-if>
+
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:16px;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <span style="font:500 26px 'JetBrains Mono',monospace;color:#2B1D12;text-decoration:{{ f.strike }}">{{ f.receipt }}</span>
+            <span style="height:28px;padding:0 10px;border-radius:999px;background:{{ f.syncBg }};color:{{ f.syncColor }};font-size:13px;font-weight:800;display:inline-flex;align-items:center;gap:4px"><span class="material-symbols-rounded" style="font-size:16px">{{ f.syncIcon }}</span>{{ f.syncLabel }}</span>
+          </div>
+          <span style="font-size:16px;font-weight:700;color:#6B5B4B">{{ f.date }}</span>
+          <span style="display:flex;align-items:center;gap:8px;margin-top:4px;font-size:16px;font-weight:700;color:#2B1D12">
+            <span style="width:28px;height:28px;border-radius:50%;background:#F6ECDD;color:#5A3414;font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center">{{ f.initial }}</span>Registrada por {{ f.by }}
+          </span>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:4px 16px;display:flex;flex-direction:column">
+          <sc-for list="{{ f.items }}" as="it" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #EFE3CF">
+              <span style="min-width:40px;height:32px;border-radius:8px;background:#FFF4CC;color:#2B1D12;font-size:16px;font-weight:900;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums">{{ it.qty }}×</span>
+              <span style="flex:1;min-width:0;display:flex;flex-direction:column">
+                <span style="font-size:17px;font-weight:800;color:{{ f.textColor }};text-decoration:{{ f.strike }};line-height:1.2">{{ it.name }}</span>
+                <span style="font-size:14px;font-weight:700;color:#6B5B4B;font-variant-numeric:tabular-nums">{{ it.unit }} c/u</span>
+              </span>
+              <span style="font-size:18px;font-weight:900;color:{{ f.textColor }};text-decoration:{{ f.strike }};font-variant-numeric:tabular-nums">{{ it.subtotal }}</span>
+            </div>
+          </sc-for>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:14px 0 10px">
+            <span style="font-size:18px;font-weight:800;color:#6B5B4B">Total</span>
+            <span style="font-size:40px;font-weight:900;color:{{ f.textColor }};text-decoration:{{ f.strike }};font-variant-numeric:tabular-nums;line-height:1">{{ f.total }}</span>
+          </div>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:4px 16px;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:center;min-height:48px;font-size:16px;font-weight:700">
+            <span style="color:#6B5B4B">Medio de pago</span>
+            <span style="display:flex;align-items:center;gap:6px;font-weight:800"><span class="material-symbols-rounded" style="font-size:20px;color:#7A4A1F">{{ f.icon }}</span>{{ f.method }}</span>
+          </div>
+          <sc-if value="{{ f.cash }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;justify-content:space-between;align-items:center;min-height:48px;font-size:16px;font-weight:700;border-top:1px solid #EFE3CF">
+              <span style="color:#6B5B4B">Pagó con</span><span style="font-weight:800;font-variant-numeric:tabular-nums">{{ f.paid }}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;min-height:48px;border-top:1px solid #EFE3CF">
+              <span style="font-size:16px;font-weight:800;color:#1F7A3D">Vueltas</span><span style="font-size:22px;font-weight:900;color:#1F7A3D;font-variant-numeric:tabular-nums">{{ f.change }}</span>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <div style="position:absolute;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #EFE3CF;padding:12px 16px 16px;display:flex;gap:10px">
+        <button style="flex:1.2;height:56px;padding:0 8px;white-space:nowrap;border:2px solid #7A4A1F;border-radius:12px;background:#fff;color:#5A3414;font:800 16px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:4px;cursor:pointer" style-active="background:#F6ECDD"><span class="material-symbols-rounded" style="font-size:20px">print</span>Reimprimir recibo</button>
+        <sc-if value="{{ f.canVoid }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ f.openDialog }}" style="flex:1;height:56px;padding:0 8px;white-space:nowrap;border:0;border-radius:12px;background:#C0322B;color:#fff;font:800 16px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:4px;cursor:pointer" style-active="background:#A5271F"><span class="material-symbols-rounded" style="font-size:20px">block</span>Anular venta</button>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ f.dialog }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ f.closeDialog }}" style="position:absolute;inset:0;background:rgba(43,29,18,.55)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:12px 12px 0 0;box-shadow:0 -8px 24px rgba(43,29,18,.2);padding:8px 16px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:center"><span style="width:40px;height:5px;border-radius:999px;background:#E3D3BA"></span></div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="width:48px;height:48px;border-radius:50%;background:#FBE6E4;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span class="material-symbols-rounded" style="font-size:28px;color:#C0322B">warning</span></span>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span style="font-size:22px;font-weight:900;color:#2B1D12;line-height:1.2">¿Anular la venta {{ f.receipt }}?</span>
+              <span style="font-size:16px;font-weight:600;color:#2B1D12;line-height:1.4;text-wrap:pretty">Esta acción no se puede deshacer. La venta de <strong>{{ f.total }}</strong> dejará de sumar al total del día.</span>
+            </div>
+          </div>
+          <span style="font-size:16px;font-weight:800;color:#5A3414;margin-top:4px">Motivo</span>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ f.reasons }}" as="r" hint-placeholder-count="4">
+              <button onClick="{{ r.onClick }}" style="height:52px;border:2px solid {{ r.border }};border-radius:12px;background:{{ r.bg }};display:flex;align-items:center;gap:12px;padding:0 14px;cursor:pointer;font:800 17px 'Nunito',sans-serif;color:#2B1D12;text-align:left">
+                <span style="width:22px;height:22px;border-radius:50%;border:2px solid {{ r.ring }};box-sizing:border-box;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="width:10px;height:10px;border-radius:50%;background:{{ r.dot }}"></span></span>{{ r.label }}
+              </button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ f.isOther }}" hint-placeholder-val="{{ false }}">
+            <input value="{{ f.other }}" onChange="{{ f.onOther }}" placeholder="Escribe el motivo" style="height:56px;border:2px solid #7A4A1F;border-radius:12px;box-shadow:0 0 0 4px rgba(245,180,0,.35);padding:0 16px;font:600 18px 'Nunito',sans-serif;color:#2B1D12;outline:none"></input>
+          </sc-if>
+          <div style="display:flex;gap:10px;margin-top:4px">
+            <button onClick="{{ f.closeDialog }}" style="flex:1;height:56px;border:2px solid #7A4A1F;border-radius:12px;background:#fff;color:#5A3414;font:800 18px 'Nunito',sans-serif;cursor:pointer">Cancelar</button>
+            <button onClick="{{ f.confirm }}" disabled="{{ f.cantConfirm }}" style="flex:1;height:56px;border:0;border-radius:12px;background:{{ f.confirmBg }};color:{{ f.confirmColor }};font:900 18px 'Nunito',sans-serif;cursor:pointer">Anular venta</button>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</sc-for>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const cop = n => '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const ICON = { Efectivo: 'payments', Nequi: 'smartphone', Daviplata: 'account_balance_wallet', Transferencia: 'account_balance' };
+const REASONS = ['Error al registrar', 'Cliente canceló', 'Producto equivocado', 'Otro'];
+const SALE_42 = { receipt: 'A-0042', time: '12:46 p. m.', by: 'Carlos', method: 'Efectivo', paid: 25000, pending: true,
+  items: [[1, 'Arepa mixta', 11000], [1, 'Arepa de queso', 5000], [1, 'Gaseosa', 3000]] };
+const SALE_39 = { receipt: 'A-0039', time: '12:20 p. m.', by: 'Carlos', method: 'Efectivo', paid: 50000,
+  items: [[3, 'Arepa de huevo', 7000]] };
+const INIT = {
+  '4a': { sale: SALE_42, dialog: false, reason: null, other: '', voided: false },
+  '4b': { sale: SALE_42, dialog: true, reason: 'Otro', other: 'Se registró dos veces', voided: false },
+  '4c': { sale: SALE_39, dialog: false, reason: 'Producto equivocado', other: '', voided: true, voidedBy: 'Laura', voidedAt: 'hoy, 12:24 p. m.' }
+};
+
+class Component extends DCLogic {
+  state = INIT;
+  frame(id, title) {
+    const f = this.state[id], s = f.sale;
+    const set = p => this.setState(st => ({ [id]: { ...st[id], ...p } }));
+    const total = s.items.reduce((a, [q, , p]) => a + q * p, 0);
+    const cant = !f.reason || (f.reason === 'Otro' && !f.other.trim());
+    const pending = s.pending && !f.voided;
+    return {
+      id, title, voided: f.voided, canVoid: !f.voided, dialog: f.dialog,
+      receipt: s.receipt, date: 'Martes 22 sep. 2026 · ' + s.time, by: s.by, initial: s.by[0],
+      syncBg: pending ? '#FDEBD6' : '#E3F3E7', syncColor: pending ? '#C25E00' : '#1F7A3D',
+      syncIcon: pending ? 'cloud_upload' : 'cloud_done', syncLabel: pending ? 'Pendiente' : 'Sincronizado',
+      items: s.items.map(([q, n, p]) => ({ qty: q, name: n, unit: cop(p), subtotal: cop(q * p) })),
+      total: cop(total), method: s.method, icon: ICON[s.method], cash: s.method === 'Efectivo',
+      paid: cop(s.paid), change: cop(s.paid - total),
+      textColor: f.voided ? '#9C8A76' : '#2B1D12', strike: f.voided ? 'line-through' : 'none',
+      reasonText: f.reason === 'Otro' ? f.other : f.reason, voidedBy: f.voidedBy, voidedAt: f.voidedAt,
+      reasons: REASONS.map(r => ({
+        label: r, onClick: () => set({ reason: r }),
+        bg: f.reason === r ? '#FFF4CC' : '#fff', border: f.reason === r ? '#F5B400' : '#E3D3BA',
+        ring: f.reason === r ? '#2B1D12' : '#B79C7C', dot: f.reason === r ? '#2B1D12' : 'transparent'
+      })),
+      isOther: f.reason === 'Otro', other: f.other, onOther: e => set({ other: e.target.value }),
+      openDialog: () => set({ dialog: true }), closeDialog: () => set({ dialog: false }),
+      cantConfirm: cant, confirmBg: cant ? '#F3E9D8' : '#C0322B', confirmColor: cant ? '#9C8A76' : '#fff',
+      confirm: () => !cant && set({ dialog: false, voided: true, voidedBy: 'Carlos', voidedAt: 'hoy, 12:52 p. m.' })
+    };
+  }
+  renderVals() {
+    return { frames: [this.frame('4a', 'Detalle de venta'), this.frame('4b', 'Diálogo de anulación'), this.frame('4c', 'Venta anulada')] };
+  }
+}
+</script>
+</body>
+</html>

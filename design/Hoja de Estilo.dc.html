@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet">
+<style>
+body{margin:0;background:#FFF8EC;color:#2B1D12;font-family:'Nunito',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#7A4A1F}a:hover{color:#2B1D12}
+.material-symbols-rounded{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;-webkit-font-feature-settings:'liga';font-feature-settings:'liga'}
+input::placeholder{color:#9C8A76}
+</style>
+</helmet>
+
+<div style="max-width:1080px;margin:0 auto;padding:48px 24px 96px;display:flex;flex-direction:column;gap:56px">
+
+  <header style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7A4A1F;letter-spacing:.06em;text-transform:uppercase">Sistema visual · v1</div>
+    <h1 style="margin:0;font-size:44px;font-weight:900;color:#5A3414;letter-spacing:-.01em">Cuentas Claras</h1>
+    <p style="margin:0;font-size:18px;color:#6B5B4B;max-width:620px;text-wrap:pretty">Hoja de estilo para la PWA de venta de arepas. Pensada para usar con una mano, al sol y en hora pico: alto contraste, tipografía grande y objetivos táctiles de 48 px o más.</p>
+  </header>
+
+  <!-- COLORES -->
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:24px;font-weight:800;color:#5A3414">Colores</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px">
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);overflow:hidden">
+        <div style="height:96px;background:#F5B400;display:flex;align-items:flex-end;padding:12px;font-weight:800;color:#2B1D12">Aa 12.500</div>
+        <div style="padding:12px 14px;display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px">Maíz · Primario</strong><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">#F5B400 · activo #E0A200</span><span style="font-size:13px;color:#6B5B4B">Acciones principales, texto oscuro encima</span></div>
+      </div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);overflow:hidden">
+        <div style="height:96px;background:#7A4A1F;display:flex;align-items:flex-end;padding:12px;font-weight:800;color:#fff">Aa 12.500</div>
+        <div style="padding:12px 14px;display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px">Tostado · Secundario</strong><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">#7A4A1F · títulos #5A3414</span><span style="font-size:13px;color:#6B5B4B">Encabezados, acentos, íconos</span></div>
+      </div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);overflow:hidden">
+        <div style="height:96px;background:#FFF8EC;border-bottom:1px solid #EFE3CF;display:flex;align-items:flex-end;padding:12px;font-weight:800;color:#2B1D12">Aa 12.500</div>
+        <div style="padding:12px 14px;display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px">Crema · Fondo</strong><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">#FFF8EC · borde #EFE3CF</span><span style="font-size:13px;color:#6B5B4B">Fondo de la app</span></div>
+      </div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);overflow:hidden">
+        <div style="height:96px;background:#FFFFFF;border-bottom:1px solid #EFE3CF;display:flex;align-items:flex-end;padding:12px;font-weight:800;color:#2B1D12">Aa 12.500</div>
+        <div style="padding:12px 14px;display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px">Blanco · Superficie</strong><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">#FFFFFF</span><span style="font-size:13px;color:#6B5B4B">Tarjetas, campos, barras</span></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px">
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:14px;display:flex;gap:12px;align-items:center">
+        <div style="width:48px;height:48px;border-radius:12px;background:#1F7A3D;flex-shrink:0"></div>
+        <div style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px">Éxito · Sincronizado</strong><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">#1F7A3D · fondo #E3F3E7</span></div>
+      </div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:14px;display:flex;gap:12px;align-items:center">
+        <div style="width:48px;height:48px;border-radius:12px;background:#C0322B;flex-shrink:0"></div>
+        <div style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px">Anulación · Error</strong><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">#C0322B · fondo #FBE6E4</span></div>
+      </div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:14px;display:flex;gap:12px;align-items:center">
+        <div style="width:48px;height:48px;border-radius:12px;background:#C25E00;flex-shrink:0"></div>
+        <div style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px">Pendiente · Sin conexión</strong><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">#C25E00 · fondo #FDEBD6</span></div>
+      </div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:14px;display:flex;gap:12px;align-items:center">
+        <div style="display:flex;gap:4px;flex-shrink:0"><div style="width:22px;height:48px;border-radius:8px;background:#2B1D12"></div><div style="width:22px;height:48px;border-radius:8px;background:#6B5B4B"></div></div>
+        <div style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px">Tinta · Texto</strong><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">#2B1D12 · secundario #6B5B4B</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIPOGRAFÍA -->
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:24px;font-weight:800;color:#5A3414">Tipografía</h2>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:24px;display:flex;flex-direction:column;gap:0">
+      <div style="font-size:15px;color:#6B5B4B;padding-bottom:16px">Nunito — sans-serif redondeada, cifras tabulares en montos.</div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid #EFE3CF">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Total · 48/900</span>
+        <span style="font-size:48px;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:-.01em">$37.500</span>
+      </div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid #EFE3CF">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Título · 26/800</span>
+        <span style="font-size:26px;font-weight:800;color:#5A3414">Venta actual</span>
+      </div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid #EFE3CF">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Subtítulo · 20/800</span>
+        <span style="font-size:20px;font-weight:800">Arepa de choclo con queso</span>
+      </div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid #EFE3CF">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Cuerpo · 18/600</span>
+        <span style="font-size:18px;font-weight:600">Cobrado en efectivo. Cambio: $2.500</span>
+      </div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid #EFE3CF">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Etiqueta · 15/700</span>
+        <span style="font-size:15px;font-weight:700;color:#6B5B4B">Hoy, 12:45 p. m. · Recibo #0142</span>
+      </div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid #EFE3CF">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Mínimo · 14/700</span>
+        <span style="font-size:14px;font-weight:700;color:#6B5B4B">Nada por debajo de 14 px</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTONES -->
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:24px;font-weight:800;color:#5A3414">Botones</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:20px;display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Primario · 56 px</span>
+        <button style="height:56px;border:0;border-radius:12px;background:#F5B400;color:#2B1D12;font:800 19px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 0 #C99400;cursor:pointer" style-active="background:#E0A200;transform:translateY(1px);box-shadow:0 1px 0 #C99400"><span class="material-symbols-rounded" style="font-size:24px">payments</span>Cobrar $37.500</button>
+        <button style="height:56px;border:0;border-radius:12px;background:#F3E9D8;color:#9C8A76;font:800 19px 'Nunito',sans-serif" disabled="">Cobrar</button>
+        <span style="font-size:13px;color:#6B5B4B">Normal · desactivado</span>
+      </div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:20px;display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Secundario · 48–56 px</span>
+        <button style="height:56px;border:2px solid #7A4A1F;border-radius:12px;background:#fff;color:#5A3414;font:800 18px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer" style-active="background:#F6ECDD"><span class="material-symbols-rounded" style="font-size:22px">print</span>Imprimir recibo</button>
+        <button style="height:48px;border:0;border-radius:12px;background:#F6ECDD;color:#5A3414;font:800 17px 'Nunito',sans-serif;cursor:pointer" style-active="background:#EEDFC8">Guardar sin imprimir</button>
+        <span style="font-size:13px;color:#6B5B4B">Contorno · tonal</span>
+      </div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:20px;display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Peligro · 48–56 px</span>
+        <button style="height:56px;border:0;border-radius:12px;background:#C0322B;color:#fff;font:800 18px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer" style-active="background:#A5271F"><span class="material-symbols-rounded" style="font-size:22px">block</span>Anular venta</button>
+        <button style="height:48px;border:2px solid #C0322B;border-radius:12px;background:#fff;color:#C0322B;font:800 17px 'Nunito',sans-serif;cursor:pointer" style-active="background:#FBE6E4">Quitar producto</button>
+        <span style="font-size:13px;color:#6B5B4B">Relleno (confirmar) · contorno</span>
+      </div>
+    </div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:20px;display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Selector de cantidad</span>
+        <div style="display:flex;align-items:center;gap:4px;background:#FFF8EC;border:1px solid #EFE3CF;border-radius:12px;padding:4px">
+          <button onClick="{{ dec }}" style="width:48px;height:48px;border:0;border-radius:10px;background:#fff;color:#5A3414;box-shadow:0 1px 3px rgba(90,52,20,.12);display:flex;align-items:center;justify-content:center;cursor:pointer"><span class="material-symbols-rounded" style="font-size:26px">remove</span></button>
+          <span style="min-width:44px;text-align:center;font-size:24px;font-weight:900;font-variant-numeric:tabular-nums">{{ qty }}</span>
+          <button onClick="{{ inc }}" style="width:48px;height:48px;border:0;border-radius:10px;background:#F5B400;color:#2B1D12;display:flex;align-items:center;justify-content:center;cursor:pointer"><span class="material-symbols-rounded" style="font-size:26px">add</span></button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Botón de ícono · 48 px</span>
+        <div style="display:flex;gap:8px">
+          <button style="width:48px;height:48px;border:0;border-radius:12px;background:#F6ECDD;color:#5A3414;display:flex;align-items:center;justify-content:center;cursor:pointer"><span class="material-symbols-rounded" style="font-size:26px">settings</span></button>
+          <button style="width:48px;height:48px;border:0;border-radius:12px;background:#F6ECDD;color:#5A3414;display:flex;align-items:center;justify-content:center;cursor:pointer"><span class="material-symbols-rounded" style="font-size:26px">search</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAMPOS -->
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:24px;font-weight:800;color:#5A3414">Campos de texto</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:20px;display:flex;flex-direction:column;gap:8px">
+        <label style="font-size:15px;font-weight:700;color:#5A3414">Nombre del producto</label>
+        <input placeholder="Ej. Arepa de huevo" style="height:56px;border:2px solid #E3D3BA;border-radius:12px;background:#fff;padding:0 16px;font:600 18px 'Nunito',sans-serif;color:#2B1D12;outline:none" style-focus="border-color:#7A4A1F;box-shadow:0 0 0 4px rgba(245,180,0,.35)"></input>
+        <span style="font-size:13px;color:#6B5B4B">Normal · enfoque con halo maíz</span>
+      </div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:20px;display:flex;flex-direction:column;gap:8px">
+        <label style="font-size:15px;font-weight:700;color:#5A3414">Recibido en efectivo</label>
+        <div style="height:64px;border:2px solid #7A4A1F;border-radius:12px;background:#fff;display:flex;align-items:center;padding:0 16px;gap:4px;box-shadow:0 0 0 4px rgba(245,180,0,.35)">
+          <span style="font-size:28px;font-weight:900;color:#6B5B4B">$</span>
+          <input inputmode="numeric" value="40.000" style="flex:1;min-width:0;border:0;outline:none;background:transparent;font:900 28px 'Nunito',sans-serif;font-variant-numeric:tabular-nums;color:#2B1D12"></input>
+        </div>
+        <span style="font-size:14px;font-weight:700;color:#1F7A3D">Cambio: $2.500</span>
+      </div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:20px;display:flex;flex-direction:column;gap:8px">
+        <label style="font-size:15px;font-weight:700;color:#5A3414">Precio</label>
+        <div style="height:56px;border:2px solid #C0322B;border-radius:12px;background:#fff;display:flex;align-items:center;padding:0 16px;gap:4px">
+          <span style="font-size:18px;font-weight:800;color:#6B5B4B">$</span>
+          <input value="0" style="flex:1;min-width:0;border:0;outline:none;background:transparent;font:700 18px 'Nunito',sans-serif;color:#2B1D12"></input>
+        </div>
+        <span style="font-size:14px;font-weight:700;color:#C0322B;display:flex;align-items:center;gap:4px"><span class="material-symbols-rounded" style="font-size:18px">error</span>El precio debe ser mayor a $0</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHIPS -->
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:24px;font-weight:800;color:#5A3414">Chips</h2>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:20px;display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Filtro / categoría · 44 px (toca para probar)</span>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="4">
+            <button onClick="{{ c.onClick }}" style="height:44px;padding:0 18px;border-radius:999px;border:2px solid {{ c.border }};background:{{ c.bg }};color:#2B1D12;font:800 16px 'Nunito',sans-serif;cursor:pointer">{{ c.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Método de pago · segmentado 52 px</span>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;background:#FFF8EC;border:1px solid #EFE3CF;border-radius:12px;padding:4px;max-width:420px">
+          <sc-for list="{{ pays }}" as="p" hint-placeholder-count="3">
+            <button onClick="{{ p.onClick }}" style="height:52px;border:0;border-radius:10px;background:{{ p.bg }};box-shadow:{{ p.shadow }};color:#2B1D12;font:800 16px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer"><span class="material-symbols-rounded" style="font-size:20px">{{ p.icon }}</span>{{ p.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Estado · solo lectura</span>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span style="height:32px;padding:0 12px;border-radius:999px;background:#E3F3E7;color:#1F7A3D;font:800 14px 'Nunito',sans-serif;display:inline-flex;align-items:center;gap:6px"><span class="material-symbols-rounded" style="font-size:18px">cloud_done</span>Sincronizado</span>
+          <span style="height:32px;padding:0 12px;border-radius:999px;background:#FDEBD6;color:#C25E00;font:800 14px 'Nunito',sans-serif;display:inline-flex;align-items:center;gap:6px"><span class="material-symbols-rounded" style="font-size:18px">schedule</span>Pendiente</span>
+          <span style="height:32px;padding:0 12px;border-radius:999px;background:#FDEBD6;color:#C25E00;font:800 14px 'Nunito',sans-serif;display:inline-flex;align-items:center;gap:6px"><span class="material-symbols-rounded" style="font-size:18px">cloud_off</span>Sin conexión</span>
+          <span style="height:32px;padding:0 12px;border-radius:999px;background:#FBE6E4;color:#C0322B;font:800 14px 'Nunito',sans-serif;display:inline-flex;align-items:center;gap:6px"><span class="material-symbols-rounded" style="font-size:18px">block</span>Anulada</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TARJETAS -->
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:24px;font-weight:800;color:#5A3414">Tarjetas</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Producto · toque = agregar</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <button onClick="{{ addA }}" style="position:relative;min-height:112px;border:2px solid {{ cardA.border }};border-radius:12px;background:#fff;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:14px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;gap:8px;cursor:pointer;font-family:'Nunito',sans-serif">
+            <span style="font-size:17px;font-weight:800;color:#2B1D12;line-height:1.2">Arepa de queso</span>
+            <span style="font-size:20px;font-weight:900;color:#5A3414;font-variant-numeric:tabular-nums">$6.000</span>
+            <sc-if value="{{ cardA.show }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;top:-10px;right:-10px;min-width:32px;height:32px;padding:0 6px;border-radius:999px;background:#F5B400;color:#2B1D12;font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(90,52,20,.25)">{{ cardA.count }}</span></sc-if>
+          </button>
+          <button style="min-height:112px;border:2px solid transparent;border-radius:12px;background:#fff;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:14px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;gap:8px;cursor:pointer;font-family:'Nunito',sans-serif">
+            <span style="font-size:17px;font-weight:800;color:#2B1D12;line-height:1.2">Arepa de choclo</span>
+            <span style="font-size:20px;font-weight:900;color:#5A3414;font-variant-numeric:tabular-nums">$8.500</span>
+          </button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Venta en historial</span>
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:16px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <span style="font-size:15px;font-weight:700;color:#6B5B4B">#0142 · 12:45 p. m.</span>
+            <span style="height:28px;padding:0 10px;border-radius:999px;background:#E3F3E7;color:#1F7A3D;font:800 13px 'Nunito',sans-serif;display:inline-flex;align-items:center;gap:4px"><span class="material-symbols-rounded" style="font-size:16px">cloud_done</span>Sincronizado</span>
+          </div>
+          <div style="font-size:16px;font-weight:600;color:#2B1D12">2× Arepa de queso, 1× Arepa de choclo, 2× Avena</div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed #E3D3BA;padding-top:10px">
+            <span style="font-size:15px;font-weight:700;color:#6B5B4B">Efectivo</span>
+            <span style="font-size:24px;font-weight:900;font-variant-numeric:tabular-nums">$29.500</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Resumen / total</span>
+        <div style="background:#5A3414;border-radius:12px;box-shadow:0 4px 14px rgba(90,52,20,.22);padding:18px;display:flex;flex-direction:column;gap:4px;color:#fff">
+          <span style="font-size:15px;font-weight:700;color:#F3DDBE">Vendido hoy · 38 ventas</span>
+          <span style="font-size:40px;font-weight:900;font-variant-numeric:tabular-nums;color:#FFC72C">$412.000</span>
+        </div>
+        <div style="background:#FBE6E4;border-radius:12px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start;color:#8E1F19">
+          <span class="material-symbols-rounded" style="font-size:22px;color:#C0322B">print_disabled</span>
+          <span style="font-size:15px;font-weight:700;line-height:1.35">No se encontró la impresora. Revisa que esté encendida y con Bluetooth activo.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAVEGACIÓN -->
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:24px;font-weight:800;color:#5A3414">Barras de navegación · 390 px</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+      <div style="width:390px;max-width:100%;display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Barra superior · 64 px</span>
+        <div style="height:64px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 16px">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <span style="font-size:20px;font-weight:900;color:#5A3414;line-height:1">Cuentas Claras</span>
+            <div style="display:flex;gap:10px;font-size:12px;font-weight:800">
+              <span style="display:flex;align-items:center;gap:4px;color:#1F7A3D"><span style="width:8px;height:8px;border-radius:50%;background:#1F7A3D"></span>En línea</span>
+              <span style="display:flex;align-items:center;gap:4px;color:#1F7A3D"><span class="material-symbols-rounded" style="font-size:14px">print</span>Impresora</span>
+            </div>
+          </div>
+          <button style="width:48px;height:48px;border:0;border-radius:12px;background:transparent;color:#5A3414;display:flex;align-items:center;justify-content:center;cursor:pointer" style-active="background:#F6ECDD"><span class="material-symbols-rounded" style="font-size:28px">settings</span></button>
+        </div>
+        <div style="height:64px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 16px">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <span style="font-size:20px;font-weight:900;color:#5A3414;line-height:1">Cuentas Claras</span>
+            <div style="display:flex;gap:10px;font-size:12px;font-weight:800">
+              <span style="display:flex;align-items:center;gap:4px;color:#C25E00"><span style="width:8px;height:8px;border-radius:50%;background:#C25E00"></span>Sin conexión · 3 pendientes</span>
+              <span style="display:flex;align-items:center;gap:4px;color:#C0322B"><span class="material-symbols-rounded" style="font-size:14px">print_disabled</span>Impresora</span>
+            </div>
+          </div>
+          <button style="width:48px;height:48px;border:0;border-radius:12px;background:transparent;color:#5A3414;display:flex;align-items:center;justify-content:center;cursor:pointer"><span class="material-symbols-rounded" style="font-size:28px">settings</span></button>
+        </div>
+      </div>
+      <div style="width:390px;max-width:100%;display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B5B4B">Barra inferior · 72 px (toca para probar)</span>
+        <div style="height:72px;background:#fff;border-radius:12px;box-shadow:0 -2px 10px rgba(90,52,20,.08);display:grid;grid-template-columns:repeat(3,1fr);padding:6px;gap:6px">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+            <button onClick="{{ t.onClick }}" style="border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-family:'Nunito',sans-serif">
+              <span style="width:56px;height:32px;border-radius:999px;background:{{ t.pill }};display:flex;align-items:center;justify-content:center"><span class="material-symbols-rounded" style="font-size:24px;color:{{ t.color }}">{{ t.icon }}</span></span>
+              <span style="font-size:14px;font-weight:800;color:{{ t.color }}">{{ t.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { qty: 2, chip: 'Todas', pay: 'Efectivo', tab: 'Vender', a: 2 };
+  renderVals() {
+    const s = this.state;
+    return {
+      qty: s.qty,
+      inc: () => this.setState({ qty: s.qty + 1 }),
+      dec: () => this.setState({ qty: Math.max(0, s.qty - 1) }),
+      chips: ['Todas', 'Arepas', 'Bebidas', 'Adiciones'].map(l => ({
+        label: l, onClick: () => this.setState({ chip: l }),
+        bg: s.chip === l ? '#F5B400' : '#fff', border: s.chip === l ? '#F5B400' : '#E3D3BA'
+      })),
+      pays: [['Efectivo', 'payments'], ['Nequi', 'smartphone'], ['Otro', 'more_horiz']].map(([l, i]) => ({
+        label: l, icon: i, onClick: () => this.setState({ pay: l }),
+        bg: s.pay === l ? '#F5B400' : 'transparent', shadow: s.pay === l ? '0 1px 3px rgba(90,52,20,.2)' : 'none'
+      })),
+      tabs: [['Vender', 'point_of_sale'], ['Historial', 'receipt_long'], ['Productos', 'inventory_2']].map(([l, i]) => ({
+        label: l, icon: i, onClick: () => this.setState({ tab: l }),
+        pill: s.tab === l ? '#F5B400' : 'transparent', color: s.tab === l ? '#2B1D12' : '#6B5B4B'
+      })),
+      addA: () => this.setState({ a: s.a + 1 }),
+      cardA: { count: s.a, show: s.a > 0, border: s.a > 0 ? '#F5B400' : 'transparent' }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+---
+description: Contexto general del proyecto Cuentas Claras
+alwaysApply: true
+---
+
+# Cuentas Claras
+PWA para registrar ventas de un negocio de arepas en Colombia. Android, Chrome, ancho de diseño 390 px. Todo el texto en español de Colombia.
+
+## Stack
+- Frontend: Vite + React + TypeScript estricto, Tailwind v4, React Router, Zustand (estado del pedido), Dexie (IndexedDB), vaul (hojas inferiores).
+- Backend: FastAPI + SQLModel + PostgreSQL + Alembic.
+
+## Fuentes de verdad
+- Especificación funcional: docs/PANTALLAS.md. Respeta los IDs de estado (1a, 2b…).
+- Diseño visual: design/*.dc.html. Son prototipos de referencia, NO copies su HTML ni su sintaxis (sc-for, sc-if, {{ }}).
+- Tokens: frontend/src/styles/theme.css.
+
+## Reglas de UI
+- Nunca escribas colores hex ni tamaños arbitrarios en componentes: usa solo las clases del tema (bg-maiz-500, text-tinta, h-cta, shadow-card…).
+- Reutiliza los componentes de src/components/ui. Si necesitas uno nuevo, créalo ahí como reutilizable.
+- Botones de mínimo h-touch (48 px). Acción principal h-cta.
+- Montos: siempre con formatCOP() de src/lib/format.ts, con tabular-nums y font-black.
+- Íconos: componente <Icon name="..." /> (Material Symbols Rounded).
+
+## Reglas de datos
+- Dinero como enteros en pesos. Nunca flotantes.
+- Ventas inmutables: se anulan, nunca se borran ni editan.
+- IDs con crypto.randomUUID() generados en el cliente.
+- Cada ítem de venta guarda nombre y precio al momento de vender.
+- La venta se guarda localmente ANTES de intentar imprimir o sincronizar.

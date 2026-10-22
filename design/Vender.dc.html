@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet">
+<style>
+body{margin:0;background:#EFE6D6;color:#2B1D12;font-family:'Nunito',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#7A4A1F}a:hover{color:#2B1D12}
+.material-symbols-rounded{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga'}
+button{-webkit-tap-highlight-color:transparent}
+</style>
+</helmet>
+<section style="padding:48px 48px 0;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+<sc-for list="{{ sheets }}" as="s" hint-placeholder-count="3">
+  <div id="{{ s.id }}" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="height:28px;padding:0 10px;border-radius:8px;background:#5A3414;color:#FFC72C;font:800 14px 'JetBrains Mono',monospace;display:flex;align-items:center">{{ s.id }}</span>
+      <span style="font-size:17px;font-weight:800;color:#5A3414">{{ s.title }}</span>
+    </div>
+    <div style="position:relative;width:390px;height:844px;background:#FFF8EC;border-radius:32px;overflow:hidden;box-shadow:0 12px 40px rgba(90,52,20,.22)">
+      <div style="height:28px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:13px;font-weight:800">
+        <span>12:46</span>
+        <span style="display:flex;gap:4px"><span class="material-symbols-rounded" style="font-size:16px">signal_cellular_alt</span><span class="material-symbols-rounded" style="font-size:16px">wifi</span><span class="material-symbols-rounded" style="font-size:16px">battery_5_bar</span></span>
+      </div>
+      <div style="height:64px;background:#fff;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #EFE3CF"><span style="font-size:20px;font-weight:900;color:#5A3414">Cuentas Claras</span></div>
+      <div style="position:absolute;inset:0;background:rgba(43,29,18,.55)"></div>
+
+      <div style="position:absolute;left:0;right:0;bottom:0;max-height:calc(100% - 40px);background:#fff;border-radius:12px 12px 0 0;box-shadow:0 -8px 24px rgba(43,29,18,.2);padding:8px 16px 16px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:center"><span style="width:40px;height:5px;border-radius:999px;background:#E3D3BA"></span></div>
+
+        <sc-if value="{{ s.paying }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span style="font-size:15px;font-weight:800;color:#6B5B4B">Total a cobrar · 3 productos</span>
+              <span style="font-size:52px;font-weight:900;color:#2B1D12;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-.01em">{{ s.total }}</span>
+            </div>
+            <button style="width:48px;height:48px;border:0;border-radius:12px;background:#F6ECDD;color:#5A3414;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0"><span class="material-symbols-rounded" style="font-size:26px">close</span></button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <sc-for list="{{ s.methods }}" as="m" hint-placeholder-count="4">
+              <button onClick="{{ m.onClick }}" style="height:56px;border:2px solid {{ m.border }};border-radius:12px;background:{{ m.bg }};color:#2B1D12;font:800 17px 'Nunito',sans-serif;display:flex;align-items:center;gap:8px;padding:0 12px;cursor:pointer"><span class="material-symbols-rounded" style="font-size:24px;color:{{ m.iconColor }}">{{ m.icon }}</span>{{ m.label }}</button>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ s.cash }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="height:60px;border:2px solid #7A4A1F;border-radius:12px;box-shadow:0 0 0 4px rgba(245,180,0,.35);display:flex;align-items:center;justify-content:space-between;padding:0 16px">
+                <span style="font-size:16px;font-weight:800;color:#5A3414">Paga con</span>
+                <span style="font-size:30px;font-weight:900;color:{{ s.paidColor }};font-variant-numeric:tabular-nums">{{ s.paidLabel }}</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px">
+                <sc-for list="{{ s.quick }}" as="q" hint-placeholder-count="5">
+                  <button onClick="{{ q.onClick }}" style="height:48px;padding:0 2px;border-radius:12px;white-space:nowrap;border:2px solid {{ q.border }};background:{{ q.bg }};color:#2B1D12;font:800 15px 'Nunito',sans-serif;font-variant-numeric:tabular-nums;cursor:pointer">{{ q.label }}</button>
+                </sc-for>
+              </div>
+              <div style="min-height:52px;border-radius:12px;background:{{ s.changeBg }};display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 16px;box-sizing:border-box">
+                <span style="font-size:16px;font-weight:800;color:{{ s.changeColor }};display:flex;align-items:center;gap:6px"><span class="material-symbols-rounded" style="font-size:22px">{{ s.changeIcon }}</span>{{ s.changeLabel }}</span>
+                <span style="font-size:28px;font-weight:900;color:{{ s.changeColor }};font-variant-numeric:tabular-nums">{{ s.changeValue }}</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+                <sc-for list="{{ s.keys }}" as="k" hint-placeholder-count="12">
+                  <button onClick="{{ k.onClick }}" style="height:50px;border:0;border-radius:12px;background:#F6ECDD;color:#2B1D12;font:800 24px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;cursor:pointer" style-active="background:#EEDFC8">{{ k.label }}<span class="material-symbols-rounded" style="font-size:26px">{{ k.icon }}</span></button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ s.digital }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#FFF8EC;border:1px solid #EFE3CF;border-radius:12px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start">
+              <span class="material-symbols-rounded" style="font-size:24px;color:#7A4A1F">verified</span>
+              <span style="font-size:16px;font-weight:700;line-height:1.35;color:#2B1D12">Confirma que el pago de <strong>{{ s.total }}</strong> llegó a {{ s.methodName }} antes de cobrar.</span>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <button onClick="{{ s.payPrint }}" disabled="{{ s.blocked }}" style="height:60px;border:0;border-radius:12px;background:{{ s.payBg }};color:{{ s.payColor }};box-shadow:{{ s.payShadow }};font:900 20px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer"><span class="material-symbols-rounded" style="font-size:26px">print</span>Cobrar e imprimir</button>
+            <button onClick="{{ s.payNoPrint }}" disabled="{{ s.blocked }}" style="height:48px;border:0;background:transparent;color:{{ s.linkColor }};font:800 17px 'Nunito',sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Cobrar sin imprimir</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ s.done }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px 0 8px;text-align:center">
+            <span style="width:96px;height:96px;border-radius:50%;background:#1F7A3D;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 10px #E3F3E7"><span class="material-symbols-rounded" style="font-size:60px;color:#fff">check</span></span>
+            <span style="font-size:28px;font-weight:900;color:#2B1D12;margin-top:14px">Venta registrada</span>
+            <span style="height:32px;padding:0 12px;border-radius:999px;background:#F6ECDD;color:#5A3414;font:800 16px 'JetBrains Mono',monospace;display:flex;align-items:center">Recibo A-0042</span>
+          </div>
+          <div style="background:#FFF8EC;border:1px solid #EFE3CF;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline">
+              <span style="font-size:17px;font-weight:800;color:#6B5B4B">Total</span>
+              <span style="font-size:40px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1">{{ s.total }}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;color:#2B1D12;border-top:1px dashed #E3D3BA;padding-top:10px"><span>Medio de pago</span><span style="font-weight:800">{{ s.methodName }}</span></div>
+            <sc-if value="{{ s.showChange }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;color:#2B1D12"><span>Pagó con</span><span style="font-weight:800;font-variant-numeric:tabular-nums">{{ s.paidLabel }}</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:800;color:#1F7A3D"><span>Vueltas</span><span style="font-weight:900;font-variant-numeric:tabular-nums">{{ s.changeValue }}</span></div>
+            </sc-if>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:15px;font-weight:800;color:{{ s.printColor }}"><span class="material-symbols-rounded" style="font-size:20px">{{ s.printIcon }}</span>{{ s.printLabel }}</div>
+          <button onClick="{{ s.reset }}" style="height:60px;border:0;border-radius:12px;background:#F5B400;color:#2B1D12;box-shadow:0 2px 0 #C99400;font:900 20px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;margin-top:4px"><span class="material-symbols-rounded" style="font-size:26px">add_shopping_cart</span>Nueva venta</button>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</sc-for>
+</section>
+<section style="padding:48px;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+<sc-for list="{{ frames }}" as="f" hint-placeholder-count="2">
+  <div id="{{ f.id }}" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="height:28px;padding:0 10px;border-radius:8px;background:#5A3414;color:#FFC72C;font:800 14px 'JetBrains Mono',monospace;display:flex;align-items:center">{{ f.id }}</span>
+      <span style="font-size:17px;font-weight:800;color:#5A3414">{{ f.title }}</span>
+    </div>
+
+    <div style="position:relative;width:390px;height:844px;background:#FFF8EC;border-radius:32px;overflow:hidden;box-shadow:0 12px 40px rgba(90,52,20,.22);display:flex;flex-direction:column">
+      <div style="height:28px;flex-shrink:0;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:13px;font-weight:800;color:#2B1D12">
+        <span>12:45</span>
+        <span style="display:flex;gap:4px"><span class="material-symbols-rounded" style="font-size:16px">signal_cellular_alt</span><span class="material-symbols-rounded" style="font-size:16px">wifi</span><span class="material-symbols-rounded" style="font-size:16px">battery_5_bar</span></span>
+      </div>
+
+      <div style="height:64px;flex-shrink:0;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 16px;border-bottom:1px solid #EFE3CF">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <span style="font-size:20px;font-weight:900;color:#5A3414;line-height:1">Cuentas Claras</span>
+          <div style="display:flex;gap:10px;font-size:12px;font-weight:800;color:#1F7A3D">
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#1F7A3D"></span>En línea</span>
+            <span style="display:flex;align-items:center;gap:4px"><span class="material-symbols-rounded" style="font-size:14px">print</span>Impresora</span>
+          </div>
+        </div>
+        <button style="width:48px;height:48px;border:0;border-radius:12px;background:transparent;color:#5A3414;display:flex;align-items:center;justify-content:center;cursor:pointer" style-active="background:#F6ECDD"><span class="material-symbols-rounded" style="font-size:28px">settings</span></button>
+      </div>
+
+      <div style="flex-shrink:0;display:flex;gap:8px;overflow-x:auto;padding:12px 16px;scrollbar-width:none">
+        <sc-for list="{{ f.cats }}" as="c" hint-placeholder-count="4">
+          <button onClick="{{ c.onClick }}" style="flex-shrink:0;height:44px;padding:0 18px;border-radius:999px;border:2px solid {{ c.border }};background:{{ c.bg }};color:#2B1D12;font:800 16px 'Nunito',sans-serif;cursor:pointer">{{ c.label }}</button>
+        </sc-for>
+      </div>
+
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:4px 16px 176px;scrollbar-width:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <sc-for list="{{ f.products }}" as="p" hint-placeholder-count="8">
+            <button onClick="{{ p.onClick }}" style="position:relative;min-height:120px;border:2px solid {{ p.border }};border-radius:12px;background:{{ p.bg }};box-shadow:0 2px 8px rgba(90,52,20,.08);padding:14px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;gap:10px;cursor:pointer;font-family:'Nunito',sans-serif" style-active="transform:scale(.97)">
+              <span style="font-size:18px;font-weight:800;color:#2B1D12;line-height:1.2;padding-right:32px;text-wrap:pretty">{{ p.name }}</span>
+              <span style="font-size:22px;font-weight:900;color:#5A3414;font-variant-numeric:tabular-nums">{{ p.price }}</span>
+              <sc-if value="{{ p.inCart }}" hint-placeholder-val="{{ false }}">
+                <span style="position:absolute;top:8px;right:8px;min-width:36px;height:36px;padding:0 6px;box-sizing:border-box;border-radius:999px;background:#F5B400;color:#2B1D12;font-size:19px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(90,52,20,.25)">{{ p.qty }}</span>
+              </sc-if>
+            </button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ f.noResults }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:48px 24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;color:#6B5B4B">
+            <span class="material-symbols-rounded" style="font-size:40px;color:#B79C7C">inventory_2</span>
+            <span style="font-size:17px;font-weight:800;color:#5A3414">Aún no hay adicionales</span>
+            <span style="font-size:15px;font-weight:600">Agrégalos en la pestaña Productos.</span>
+          </div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ f.expanded }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ f.toggle }}" style="position:absolute;left:0;right:0;top:0;bottom:72px;background:rgba(43,29,18,.45)"></div>
+      </sc-if>
+
+      <div style="position:absolute;left:0;right:0;bottom:72px;background:#fff;border-radius:12px 12px 0 0;box-shadow:0 -6px 20px rgba(90,52,20,.16);padding:0 16px 16px;display:flex;flex-direction:column">
+        <button onClick="{{ f.toggle }}" disabled="{{ f.empty }}" style="border:0;background:transparent;padding:8px 0 0;display:flex;justify-content:center;cursor:pointer"><span style="width:40px;height:5px;border-radius:999px;background:#E3D3BA"></span></button>
+
+        <sc-if value="{{ f.expanded }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0 4px">
+            <span style="font-size:20px;font-weight:800;color:#5A3414">Pedido actual</span>
+            <button onClick="{{ f.clear }}" style="height:48px;padding:0 14px;border:2px solid #C0322B;border-radius:12px;background:#fff;color:#C0322B;font:800 16px 'Nunito',sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer" style-active="background:#FBE6E4"><span class="material-symbols-rounded" style="font-size:20px">delete_sweep</span>Vaciar</button>
+          </div>
+          <div style="max-height:330px;overflow-y:auto;display:flex;flex-direction:column;scrollbar-width:none">
+            <sc-for list="{{ f.items }}" as="it" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #EFE3CF">
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:17px;font-weight:800;color:#2B1D12;line-height:1.2">{{ it.name }}</span>
+                  <span style="font-size:14px;font-weight:700;color:#6B5B4B;font-variant-numeric:tabular-nums">{{ it.unit }} c/u</span>
+                  <span style="font-size:18px;font-weight:900;color:#5A3414;font-variant-numeric:tabular-nums">{{ it.subtotal }}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:#FFF8EC;border:1px solid #EFE3CF;border-radius:12px;padding:4px;flex-shrink:0">
+                  <button onClick="{{ it.dec }}" style="width:48px;height:48px;border:0;border-radius:10px;background:#fff;color:{{ it.decColor }};box-shadow:0 1px 3px rgba(90,52,20,.12);display:flex;align-items:center;justify-content:center;cursor:pointer"><span class="material-symbols-rounded" style="font-size:26px">{{ it.decIcon }}</span></button>
+                  <span style="min-width:36px;text-align:center;font-size:22px;font-weight:900;font-variant-numeric:tabular-nums">{{ it.qty }}</span>
+                  <button onClick="{{ it.inc }}" style="width:48px;height:48px;border:0;border-radius:10px;background:#F5B400;color:#2B1D12;display:flex;align-items:center;justify-content:center;cursor:pointer"><span class="material-symbols-rounded" style="font-size:26px">add</span></button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <button onClick="{{ f.toggle }}" disabled="{{ f.empty }}" style="border:0;background:transparent;padding:8px 0 12px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;cursor:pointer;font-family:'Nunito',sans-serif;text-align:left">
+          <span style="display:flex;flex-direction:column;gap:2px">
+            <span style="font-size:17px;font-weight:800;color:#2B1D12">{{ f.countLabel }}</span>
+            <span style="font-size:14px;font-weight:700;color:#7A4A1F;display:flex;align-items:center;gap:2px">{{ f.hint }}<span class="material-symbols-rounded" style="font-size:20px">{{ f.chevron }}</span></span>
+          </span>
+          <span style="font-size:36px;font-weight:900;color:{{ f.totalColor }};font-variant-numeric:tabular-nums;line-height:1">{{ f.total }}</span>
+        </button>
+
+        <button disabled="{{ f.empty }}" style="height:60px;border:0;border-radius:12px;background:{{ f.payBg }};color:{{ f.payColor }};box-shadow:{{ f.payShadow }};font:900 21px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer" style-active="transform:translateY(1px)"><span class="material-symbols-rounded" style="font-size:26px">payments</span>Cobrar</button>
+      </div>
+
+      <div style="position:absolute;left:0;right:0;bottom:0;height:72px;background:#fff;border-top:1px solid #EFE3CF;display:grid;grid-template-columns:repeat(3,1fr);padding:6px;gap:6px;box-sizing:border-box">
+        <button style="border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif">
+          <span style="width:56px;height:32px;border-radius:999px;background:#F5B400;display:flex;align-items:center;justify-content:center"><span class="material-symbols-rounded" style="font-size:24px;color:#2B1D12">point_of_sale</span></span>
+          <span style="font-size:14px;font-weight:900;color:#2B1D12">Vender</span>
+        </button>
+        <button style="border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif">
+          <span style="width:56px;height:32px;display:flex;align-items:center;justify-content:center"><span class="material-symbols-rounded" style="font-size:24px;color:#6B5B4B">receipt_long</span></span>
+          <span style="font-size:14px;font-weight:800;color:#6B5B4B">Historial</span>
+        </button>
+        <button style="border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif">
+          <span style="width:56px;height:32px;display:flex;align-items:center;justify-content:center"><span class="material-symbols-rounded" style="font-size:24px;color:#6B5B4B">inventory_2</span></span>
+          <span style="font-size:14px;font-weight:800;color:#6B5B4B">Productos</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</sc-for>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const PRODUCTS = [
+  { id: 'queso', name: 'Arepa de queso', price: 5000, cat: 'Arepas' },
+  { id: 'carne', name: 'Arepa rellena de carne', price: 9000, cat: 'Arepas' },
+  { id: 'huevo', name: 'Arepa de huevo', price: 7000, cat: 'Arepas' },
+  { id: 'mixta', name: 'Arepa mixta', price: 11000, cat: 'Arepas' },
+  { id: 'choclo', name: 'Arepa de choclo', price: 6000, cat: 'Arepas' },
+  { id: 'gaseosa', name: 'Gaseosa', price: 3000, cat: 'Bebidas' },
+  { id: 'jugo', name: 'Jugo natural', price: 4500, cat: 'Bebidas' },
+  { id: 'cafe', name: 'Café', price: 2000, cat: 'Bebidas' }
+];
+const SHEET_INIT = {
+  '2a': { method: 'Efectivo', paid: '25000', done: false, printed: true },
+  '2b': { method: 'Nequi', paid: '', done: false, printed: true },
+  '2c': { method: 'Efectivo', paid: '25000', done: true, printed: true }
+};
+const CATS = ['Todas', 'Arepas', 'Bebidas', 'Adicionales'];
+const cop = n => '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+class Component extends DCLogic {
+  state = {
+    '1a': { cart: {}, exp: false, cat: 'Todas' },
+    '1b': { cart: { mixta: 1, queso: 1, gaseosa: 1 }, exp: true, cat: 'Todas' }
+  };
+  upd(id, fn) { this.setState(s => ({ [id]: fn(s[id]) })); }
+  setQty(id, pid, q) {
+    this.upd(id, f => {
+      const cart = { ...f.cart };
+      if (q <= 0) delete cart[pid]; else cart[pid] = q;
+      return { ...f, cart, exp: Object.keys(cart).length ? f.exp : false };
+    });
+  }
+  frame(id, title) {
+    const f = this.state[id];
+    const count = Object.values(f.cart).reduce((a, b) => a + b, 0);
+    const total = PRODUCTS.reduce((a, p) => a + (f.cart[p.id] || 0) * p.price, 0);
+    const empty = count === 0;
+    const list = PRODUCTS.filter(p => f.cat === 'Todas' || p.cat === f.cat);
+    return {
+      id, title, empty, expanded: f.exp,
+      cats: CATS.map(c => ({
+        label: c, onClick: () => this.upd(id, x => ({ ...x, cat: c })),
+        bg: f.cat === c ? '#F5B400' : '#fff', border: f.cat === c ? '#F5B400' : '#E3D3BA'
+      })),
+      products: list.map(p => {
+        const q = f.cart[p.id] || 0;
+        return {
+          name: p.name, price: cop(p.price), qty: q, inCart: q > 0,
+          bg: q ? '#FFF4CC' : '#fff', border: q ? '#F5B400' : 'transparent',
+          onClick: () => this.setQty(id, p.id, q + 1)
+        };
+      }),
+      noResults: list.length === 0,
+      items: PRODUCTS.filter(p => f.cart[p.id]).map(p => {
+        const q = f.cart[p.id];
+        return {
+          name: p.name, unit: cop(p.price), subtotal: cop(p.price * q), qty: q,
+          decIcon: q === 1 ? 'delete' : 'remove', decColor: q === 1 ? '#C0322B' : '#5A3414',
+          dec: () => this.setQty(id, p.id, q - 1), inc: () => this.setQty(id, p.id, q + 1)
+        };
+      }),
+      countLabel: empty ? 'Pedido vacío' : count === 1 ? '1 producto' : count + ' productos',
+      hint: empty ? 'Toca un producto para agregarlo' : f.exp ? 'Ocultar pedido' : 'Ver pedido',
+      chevron: empty ? '' : f.exp ? 'expand_more' : 'expand_less',
+      total: cop(total), totalColor: empty ? '#9C8A76' : '#2B1D12',
+      toggle: () => !empty && this.upd(id, x => ({ ...x, exp: !x.exp })),
+      clear: () => this.upd(id, x => ({ ...x, cart: {}, exp: false })),
+      payBg: empty ? '#F3E9D8' : '#F5B400', payColor: empty ? '#9C8A76' : '#2B1D12',
+      payShadow: empty ? 'none' : '0 2px 0 #C99400'
+    };
+  }
+  sheet(id, title) {
+    const init = SHEET_INIT[id];
+    const s = this.state.sheets?.[id] || init;
+    const set = patch => this.setState(st => ({ sheets: { ...(st.sheets || SHEET_INIT), [id]: { ...((st.sheets || SHEET_INIT)[id]), ...patch } } }));
+    const TOTAL = 19000;
+    const cash = s.method === 'Efectivo';
+    const paid = s.paid === '' ? null : Number(s.paid);
+    const short = cash && paid !== null && paid < TOTAL;
+    const change = paid === null ? 0 : paid - TOTAL;
+    const methods = [['Efectivo', 'payments'], ['Nequi', 'smartphone'], ['Daviplata', 'account_balance_wallet'], ['Transferencia', 'account_balance']];
+    const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '000', '0', 'back'];
+    const press = k => {
+      let v = s.paid;
+      if (k === 'back') v = v.slice(0, -1);
+      else if (v.length < 7) v = (v + k).replace(/^0+/, '');
+      set({ paid: v });
+    };
+    const quick = [10000, 20000, 50000, 100000, TOTAL];
+    return {
+      id, title, paying: !s.done, done: s.done, cash, digital: !cash, methodName: s.method,
+      total: cop(TOTAL),
+      methods: methods.map(([l, i]) => ({
+        label: l, icon: i, onClick: () => set({ method: l }),
+        bg: s.method === l ? '#F5B400' : '#fff', border: s.method === l ? '#F5B400' : '#E3D3BA',
+        iconColor: s.method === l ? '#2B1D12' : '#7A4A1F'
+      })),
+      paidLabel: paid === null ? '$0' : cop(paid), paidColor: paid === null ? '#9C8A76' : '#2B1D12',
+      quick: quick.map((v, i) => ({
+        label: i === 4 ? 'Exacto' : '$' + v / 1000 + ' mil', onClick: () => set({ paid: String(v) }),
+        bg: paid === v ? '#F5B400' : '#fff', border: paid === v ? '#F5B400' : '#E3D3BA'
+      })),
+      changeBg: short ? '#FBE6E4' : paid === null ? '#F6ECDD' : '#E3F3E7',
+      changeColor: short ? '#C0322B' : paid === null ? '#6B5B4B' : '#1F7A3D',
+      changeIcon: short ? 'error' : paid === null ? 'info' : 'savings',
+      changeLabel: short ? 'Monto menor al total. Faltan' : paid === null ? 'Sin monto: se cobra exacto' : 'Vueltas',
+      changeValue: short ? cop(TOTAL - paid) : paid === null ? '' : cop(change),
+      showChange: cash && paid !== null && change > 0,
+      keys: keys.map(k => ({ label: k === 'back' ? '' : k, icon: k === 'back' ? 'backspace' : '', onClick: () => press(k) })),
+      blocked: short,
+      payBg: short ? '#F3E9D8' : '#F5B400', payColor: short ? '#9C8A76' : '#2B1D12',
+      payShadow: short ? 'none' : '0 2px 0 #C99400', linkColor: short ? '#B7A690' : '#5A3414',
+      payPrint: () => set({ done: true, printed: true }),
+      payNoPrint: () => set({ done: true, printed: false }),
+      printIcon: s.printed ? 'print' : 'print_disabled',
+      printLabel: s.printed ? 'Recibo impreso' : 'Guardada sin imprimir',
+      printColor: s.printed ? '#1F7A3D' : '#6B5B4B',
+      reset: () => set({ ...init, done: false, method: 'Efectivo', paid: '' })
+    };
+  }
+  renderVals() {
+    return {
+      sheets: [this.sheet('2a', 'Cobro · efectivo con vueltas'), this.sheet('2b', 'Cobro · Nequi'), this.sheet('2c', 'Venta exitosa')],
+      frames: [this.frame('1a', 'Pedido vacío'), this.frame('1b', 'Con productos · panel expandido')] };
+  }
+}
+</script>
+</body>
+</html>

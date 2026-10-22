@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet">
+<style>
+body{margin:0;background:#EFE6D6;color:#2B1D12;font-family:'Nunito',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#7A4A1F}a:hover{color:#2B1D12}
+.material-symbols-rounded{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga'}
+button{-webkit-tap-highlight-color:transparent}
+input::placeholder{color:#9C8A76}
+</style>
+</helmet>
+<section style="padding:48px;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+<sc-for list="{{ frames }}" as="f" hint-placeholder-count="2">
+  <div id="{{ f.id }}" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="height:28px;padding:0 10px;border-radius:8px;background:#5A3414;color:#FFC72C;font:800 14px 'JetBrains Mono',monospace;display:flex;align-items:center">{{ f.id }}</span>
+      <span style="font-size:17px;font-weight:800;color:#5A3414">{{ f.title }}</span>
+    </div>
+    <div style="width:390px;height:844px;background:#FFF8EC;border-radius:32px;overflow:hidden;box-shadow:0 12px 40px rgba(90,52,20,.22);display:flex;flex-direction:column">
+      <div style="height:28px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:13px;font-weight:800">
+        <span>7:02</span>
+        <span style="display:flex;gap:4px"><span class="material-symbols-rounded" style="font-size:16px">signal_cellular_alt</span><span class="material-symbols-rounded" style="font-size:16px">wifi</span><span class="material-symbols-rounded" style="font-size:16px">battery_full</span></span>
+      </div>
+
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center">
+        <div style="position:relative;width:168px;height:168px;display:flex;align-items:center;justify-content:center">
+          <span style="position:absolute;inset:0;border-radius:50%;background:#FBEFC8"></span>
+          <span style="position:absolute;width:112px;height:18px;bottom:22px;border-radius:50%;background:rgba(122,74,31,.18)"></span>
+          <span style="position:relative;width:112px;height:112px;border-radius:50%;background:#F2BE3C;box-shadow:inset 0 0 0 7px #E3A527,inset 0 -10px 0 7px rgba(201,138,43,.35)">
+            <span style="position:absolute;width:16px;height:10px;border-radius:50%;background:#C98A2B;top:30px;left:30px"></span>
+            <span style="position:absolute;width:12px;height:8px;border-radius:50%;background:#C98A2B;top:46px;left:70px"></span>
+            <span style="position:absolute;width:18px;height:11px;border-radius:50%;background:#B97A22;top:70px;left:40px"></span>
+            <span style="position:absolute;width:9px;height:7px;border-radius:50%;background:#C98A2B;top:24px;left:68px"></span>
+          </span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:34px;font-weight:900;color:#5A3414;letter-spacing:-.01em;line-height:1.1">Cuentas Claras</span>
+          <span style="font-size:17px;font-weight:700;color:#6B5B4B">Arepas La Esquina</span>
+        </div>
+      </div>
+
+      <div style="flex-shrink:0;background:#fff;border-radius:12px 12px 0 0;box-shadow:0 -6px 20px rgba(90,52,20,.1);padding:24px 16px 28px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <label style="font-size:15px;font-weight:800;color:#5A3414">Usuario</label>
+          <input value="{{ f.user }}" onChange="{{ f.onUser }}" autocomplete="username" autocapitalize="none" placeholder="Tu usuario" style="height:56px;border:2px solid {{ f.border }};border-radius:12px;padding:0 16px;font:700 18px 'Nunito',sans-serif;color:#2B1D12;outline:none" style-focus="box-shadow:0 0 0 4px rgba(245,180,0,.35)"></input>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <label style="font-size:15px;font-weight:800;color:#5A3414">Contraseña</label>
+          <div style="height:56px;border:2px solid {{ f.border }};border-radius:12px;display:flex;align-items:center;padding:0 4px 0 16px;box-sizing:border-box">
+            <input type="{{ f.pwType }}" value="{{ f.pw }}" onChange="{{ f.onPw }}" autocomplete="current-password" placeholder="Tu contraseña" style="flex:1;min-width:0;border:0;outline:none;background:transparent;font:700 18px 'Nunito',sans-serif;color:#2B1D12"></input>
+            <button onClick="{{ f.toggleShow }}" aria-label="{{ f.showLabel }}" style="width:48px;height:48px;border:0;border-radius:10px;background:transparent;color:#7A4A1F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-active="background:#F6ECDD"><span class="material-symbols-rounded" style="font-size:26px">{{ f.eye }}</span></button>
+          </div>
+        </div>
+        <sc-if value="{{ f.error }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FBE6E4;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;color:#8E1F19">
+            <span class="material-symbols-rounded" style="font-size:24px;color:#C0322B">error</span>
+            <span style="font-size:16px;font-weight:800">Usuario o contraseña incorrectos</span>
+          </div>
+        </sc-if>
+        <button onClick="{{ f.submit }}" style="height:60px;margin-top:4px;border:0;border-radius:12px;background:#F5B400;color:#2B1D12;box-shadow:0 2px 0 #C99400;font:900 20px 'Nunito',sans-serif;cursor:pointer" style-active="background:#E0A200;transform:translateY(1px)">Ingresar</button>
+      </div>
+    </div>
+  </div>
+</sc-for>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    '7a': { user: '', pw: '', show: false, error: false },
+    '7b': { user: 'carlos', pw: 'arepa12', show: false, error: true }
+  };
+  frame(id, title) {
+    const f = this.state[id];
+    const set = p => this.setState(s => ({ [id]: { ...s[id], ...p } }));
+    return {
+      id, title, user: f.user, pw: f.pw, error: f.error,
+      onUser: e => set({ user: e.target.value, error: false }),
+      onPw: e => set({ pw: e.target.value, error: false }),
+      pwType: f.show ? 'text' : 'password', eye: f.show ? 'visibility_off' : 'visibility',
+      showLabel: f.show ? 'Ocultar contraseña' : 'Mostrar contraseña',
+      toggleShow: () => set({ show: !f.show }),
+      border: f.error ? '#C0322B' : '#E3D3BA',
+      submit: () => set({ error: true })
+    };
+  }
+  renderVals() {
+    return { frames: [this.frame('7a', 'Inicio de sesión'), this.frame('7b', 'Error de acceso')] };
+  }
+}
+</script>
+</body>
+</html>

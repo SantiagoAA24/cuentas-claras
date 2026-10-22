@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet">
+<style>
+body{margin:0;background:#EFE6D6;color:#2B1D12;font-family:'Nunito',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#7A4A1F}a:hover{color:#2B1D12}
+.material-symbols-rounded{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga'}
+button{-webkit-tap-highlight-color:transparent}
+input::placeholder,textarea::placeholder{color:#9C8A76}
+@keyframes ccPulse{0%{transform:scale(.55);opacity:.9}100%{transform:scale(1.25);opacity:0}}
+@keyframes ccSpin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+
+<section style="padding:48px 48px 0;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+<sc-for list="{{ settings }}" as="f" hint-placeholder-count="2">
+  <div id="{{ f.id }}" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="height:28px;padding:0 10px;border-radius:8px;background:#5A3414;color:#FFC72C;font:800 14px 'JetBrains Mono',monospace;display:flex;align-items:center">{{ f.id }}</span>
+      <span style="font-size:17px;font-weight:800;color:#5A3414">{{ f.title }}</span>
+    </div>
+    <div style="width:390px;min-height:844px;background:#FFF8EC;border-radius:32px;overflow:hidden;box-shadow:0 12px 40px rgba(90,52,20,.22);display:flex;flex-direction:column">
+      <div style="height:28px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:13px;font-weight:800">
+        <span>1:05</span>
+        <span style="display:flex;gap:4px"><span class="material-symbols-rounded" style="font-size:16px">signal_cellular_alt</span><span class="material-symbols-rounded" style="font-size:16px">wifi</span><span class="material-symbols-rounded" style="font-size:16px">battery_5_bar</span></span>
+      </div>
+      <div style="height:64px;background:#fff;display:flex;align-items:center;gap:4px;padding:0 8px;border-bottom:1px solid #EFE3CF">
+        <button style="width:48px;height:48px;border:0;border-radius:12px;background:transparent;color:#5A3414;display:flex;align-items:center;justify-content:center;cursor:pointer"><span class="material-symbols-rounded" style="font-size:28px">arrow_back</span></button>
+        <span style="font-size:20px;font-weight:900;color:#5A3414">Configuración</span>
+      </div>
+
+      <div style="padding:20px 16px 32px;display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:18px;font-weight:900;color:#5A3414">Impresora</span>
+          <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:16px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="width:52px;height:52px;border-radius:12px;background:{{ f.pBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0"><span class="material-symbols-rounded" style="font-size:28px;color:{{ f.pColor }}">{{ f.pIcon }}</span></span>
+              <span style="flex:1;display:flex;flex-direction:column;gap:2px">
+                <span style="font-size:18px;font-weight:900;color:{{ f.pColor }}">{{ f.pStatus }}</span>
+                <span style="font-size:15px;font-weight:700;color:#2B1D12">{{ f.pDevice }}</span>
+              </span>
+            </div>
+            <button style="height:52px;border:{{ f.searchBorder }};border-radius:12px;background:{{ f.searchBg }};color:{{ f.searchColor }};box-shadow:{{ f.searchShadow }};font:800 17px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer"><span class="material-symbols-rounded" style="font-size:22px">bluetooth_searching</span>Buscar impresora</button>
+            <button disabled="{{ f.noPrinter }}" style="height:52px;border:0;border-radius:12px;background:{{ f.testBg }};color:{{ f.testColor }};font:800 17px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer"><span class="material-symbols-rounded" style="font-size:22px">receipt</span>Imprimir prueba</button>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:18px;font-weight:900;color:#5A3414">Negocio</span>
+          <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:16px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <label style="font-size:15px;font-weight:800;color:#5A3414">Nombre del negocio</label>
+              <input value="Arepas La Esquina" style="height:52px;border:2px solid #E3D3BA;border-radius:12px;padding:0 14px;font:700 17px 'Nunito',sans-serif;color:#2B1D12;outline:none" style-focus="border-color:#7A4A1F;box-shadow:0 0 0 4px rgba(245,180,0,.35)"></input>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <label style="font-size:15px;font-weight:800;color:#5A3414">Cédula o NIT</label>
+              <input inputmode="numeric" value="1.098.765.432" style="height:52px;border:2px solid #E3D3BA;border-radius:12px;padding:0 14px;font:700 17px 'Nunito',sans-serif;color:#2B1D12;outline:none;font-variant-numeric:tabular-nums" style-focus="border-color:#7A4A1F;box-shadow:0 0 0 4px rgba(245,180,0,.35)"></input>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <label style="font-size:15px;font-weight:800;color:#5A3414">Pie del recibo</label>
+              <textarea rows="2" style="border:2px solid #E3D3BA;border-radius:12px;padding:12px 14px;font:700 17px 'Nunito',sans-serif;color:#2B1D12;outline:none;resize:none" style-focus="border-color:#7A4A1F;box-shadow:0 0 0 4px rgba(245,180,0,.35)">¡Gracias por su compra!</textarea>
+              <span style="font-size:14px;font-weight:700;color:#6B5B4B">Se imprime al final de cada recibo.</span>
+            </div>
+            <span style="font-size:14px;font-weight:700;color:#1F7A3D;display:flex;align-items:center;gap:4px"><span class="material-symbols-rounded" style="font-size:18px">cloud_done</span>Los cambios se guardan solos</span>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:18px;font-weight:900;color:#5A3414">Dispositivo</span>
+          <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:4px 16px;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #EFE3CF">
+              <span style="flex:1;display:flex;flex-direction:column;gap:2px">
+                <span style="font-size:16px;font-weight:800;color:#2B1D12">Prefijo del consecutivo</span>
+                <span style="font-size:14px;font-weight:700;color:#6B5B4B;line-height:1.35;text-wrap:pretty">Asignado a este celular para que los recibos no se repitan con el otro.</span>
+              </span>
+              <span style="width:52px;height:52px;border-radius:12px;background:#FFF4CC;border:2px solid #F5B400;display:flex;align-items:center;justify-content:center;font:500 26px 'JetBrains Mono',monospace;color:#2B1D12;flex-shrink:0">A</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;min-height:56px">
+              <span style="font-size:16px;font-weight:800;color:#2B1D12">Último recibo emitido</span>
+              <span style="font:500 18px 'JetBrains Mono',monospace;color:#2B1D12">A-0042</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:18px;font-weight:900;color:#5A3414">Cuenta</span>
+          <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:16px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="width:48px;height:48px;border-radius:50%;background:#F6ECDD;color:#5A3414;font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center">C</span>
+              <span style="display:flex;flex-direction:column">
+                <span style="font-size:18px;font-weight:900;color:#2B1D12">Carlos</span>
+                <span style="font-size:14px;font-weight:700;color:#6B5B4B">Sesión iniciada en este celular</span>
+              </span>
+            </div>
+            <button style="height:52px;border:2px solid #C0322B;border-radius:12px;background:#fff;color:#C0322B;font:800 17px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer" style-active="background:#FBE6E4"><span class="material-symbols-rounded" style="font-size:22px">logout</span>Cerrar sesión</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</sc-for>
+</section>
+
+<section style="padding:48px;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+<sc-for list="{{ flows }}" as="f" hint-placeholder-count="3">
+  <div id="{{ f.id }}" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="height:28px;padding:0 10px;border-radius:8px;background:#5A3414;color:#FFC72C;font:800 14px 'JetBrains Mono',monospace;display:flex;align-items:center">{{ f.id }}</span>
+      <span style="font-size:17px;font-weight:800;color:#5A3414">{{ f.title }}</span>
+    </div>
+    <div style="position:relative;width:390px;height:844px;background:#FFF8EC;border-radius:32px;overflow:hidden;box-shadow:0 12px 40px rgba(90,52,20,.22);display:flex;flex-direction:column">
+      <div style="height:28px;flex-shrink:0;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:13px;font-weight:800">
+        <span>1:06</span>
+        <span style="display:flex;gap:4px"><span class="material-symbols-rounded" style="font-size:16px">bluetooth</span><span class="material-symbols-rounded" style="font-size:16px">wifi</span><span class="material-symbols-rounded" style="font-size:16px">battery_5_bar</span></span>
+      </div>
+      <div style="height:64px;flex-shrink:0;background:#fff;display:flex;align-items:center;gap:4px;padding:0 8px;border-bottom:1px solid #EFE3CF">
+        <button onClick="{{ f.back }}" style="width:48px;height:48px;border:0;border-radius:12px;background:transparent;color:#5A3414;display:flex;align-items:center;justify-content:center;cursor:pointer"><span class="material-symbols-rounded" style="font-size:28px">arrow_back</span></button>
+        <span style="font-size:20px;font-weight:900;color:#5A3414">Emparejar impresora</span>
+      </div>
+
+      <div style="flex:1;min-height:0;padding:24px 16px;display:flex;flex-direction:column;gap:20px">
+        <sc-if value="{{ f.isIntro }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;padding-top:16px">
+            <span style="width:132px;height:132px;border-radius:50%;background:#FBEFC8;display:flex;align-items:center;justify-content:center"><span class="material-symbols-rounded" style="font-size:68px;color:#7A4A1F">print</span></span>
+            <span style="font-size:26px;font-weight:900;color:#2B1D12;margin-top:6px;line-height:1.2">Enciende la impresora y mantenla cerca</span>
+          </div>
+          <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:4px 16px;display:flex;flex-direction:column">
+            <sc-for list="{{ f.steps }}" as="st" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:12px;min-height:60px;border-bottom:1px solid #EFE3CF">
+                <span style="width:32px;height:32px;border-radius:50%;background:#F5B400;color:#2B1D12;font-size:16px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ st.n }}</span>
+                <span style="font-size:17px;font-weight:700;color:#2B1D12;line-height:1.3;padding:8px 0">{{ st.text }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ f.isSearching }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding-top:8px">
+            <div style="position:relative;width:180px;height:180px;display:flex;align-items:center;justify-content:center">
+              {{ f.pulse }}
+              <span style="position:relative;width:88px;height:88px;border-radius:50%;background:#F5B400;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(90,52,20,.25)"><span class="material-symbols-rounded" style="font-size:44px;color:#2B1D12">bluetooth_searching</span></span>
+            </div>
+            <span style="font-size:24px;font-weight:900;color:#2B1D12">Buscando impresoras…</span>
+            <span style="font-size:16px;font-weight:600;color:#6B5B4B">Toca la tuya para conectarla.</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:15px;font-weight:800;color:#5A3414">Encontradas</span>
+            <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);overflow:hidden;display:flex;flex-direction:column">
+              <sc-for list="{{ f.devices }}" as="d" hint-placeholder-count="2">
+                <button onClick="{{ d.onClick }}" style="min-height:64px;border:0;border-bottom:1px solid #EFE3CF;background:#fff;display:flex;align-items:center;gap:12px;padding:8px 14px;text-align:left;cursor:pointer;font-family:'Nunito',sans-serif" style-active="background:#FFF8EC">
+                  <span class="material-symbols-rounded" style="font-size:26px;color:#7A4A1F">print</span>
+                  <span style="flex:1;display:flex;flex-direction:column">
+                    <span style="font-size:17px;font-weight:800;color:#2B1D12">{{ d.name }}</span>
+                    <span style="font-size:14px;font-weight:700;color:#6B5B4B">{{ d.meta }}</span>
+                  </span>
+                  <span style="height:40px;padding:0 14px;border-radius:10px;background:#F5B400;color:#2B1D12;font-size:15px;font-weight:900;display:flex;align-items:center">Conectar</span>
+                </button>
+              </sc-for>
+              <div style="min-height:52px;display:flex;align-items:center;gap:10px;padding:0 14px;font-size:15px;font-weight:700;color:#6B5B4B">
+                {{ f.spinner }}Buscando más dispositivos
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ f.isDone }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding-top:40px">
+            <span style="width:112px;height:112px;border-radius:50%;background:#1F7A3D;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 12px #E3F3E7"><span class="material-symbols-rounded" style="font-size:68px;color:#fff">check</span></span>
+            <span style="font-size:28px;font-weight:900;color:#2B1D12;margin-top:18px">Impresora conectada</span>
+            <span style="font-size:16px;font-weight:600;color:#6B5B4B;max-width:280px;text-wrap:pretty">Los recibos se imprimirán en esta impresora. Se reconectará sola la próxima vez.</span>
+          </div>
+          <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(90,52,20,.08);padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <span style="width:48px;height:48px;border-radius:12px;background:#E3F3E7;display:flex;align-items:center;justify-content:center"><span class="material-symbols-rounded" style="font-size:26px;color:#1F7A3D">print_connect</span></span>
+            <span style="flex:1;display:flex;flex-direction:column">
+              <span style="font-size:17px;font-weight:800;color:#2B1D12">{{ f.deviceName }}</span>
+              <span style="font-size:14px;font-weight:800;color:#1F7A3D">Conectada</span>
+            </span>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="flex-shrink:0;background:#fff;border-top:1px solid #EFE3CF;padding:12px 16px 16px;display:flex;flex-direction:column;gap:8px">
+        <sc-if value="{{ f.isIntro }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ f.start }}" style="height:60px;border:0;border-radius:12px;background:#F5B400;color:#2B1D12;box-shadow:0 2px 0 #C99400;font:900 20px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer"><span class="material-symbols-rounded" style="font-size:24px">bluetooth_searching</span>Buscar impresora</button>
+        </sc-if>
+        <sc-if value="{{ f.isSearching }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ f.back }}" style="height:56px;border:2px solid #7A4A1F;border-radius:12px;background:#fff;color:#5A3414;font:800 18px 'Nunito',sans-serif;cursor:pointer">Cancelar</button>
+        </sc-if>
+        <sc-if value="{{ f.isDone }}" hint-placeholder-val="{{ false }}">
+          <button style="height:56px;border:2px solid #7A4A1F;border-radius:12px;background:#fff;color:#5A3414;font:800 18px 'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer"><span class="material-symbols-rounded" style="font-size:22px">receipt</span>Imprimir prueba</button>
+          <button onClick="{{ f.finish }}" style="height:60px;border:0;border-radius:12px;background:#F5B400;color:#2B1D12;box-shadow:0 2px 0 #C99400;font:900 20px 'Nunito',sans-serif;cursor:pointer">Listo</button>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</sc-for>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const DEVICES = [['PT-210', 'Impresora térmica · 58 mm'], ['MTP-II', 'Impresora térmica · 58 mm']];
+const STEPS = ['Enciende la impresora y espera a que la luz quede fija', 'Activa el Bluetooth de este celular', 'Si pide clave, suele ser 0000 o 1234'];
+
+class Component extends DCLogic {
+  state = { '6c': 'intro', '6d': 'search', '6e': 'done', dev: { '6c': 'PT-210', '6d': 'PT-210', '6e': 'PT-210' } };
+  settings(id, title, on) {
+    return {
+      id, title, noPrinter: !on,
+      pBg: on ? '#E3F3E7' : '#FBE6E4', pColor: on ? '#1F7A3D' : '#C0322B', pIcon: on ? 'print_connect' : 'print_disabled',
+      pStatus: on ? 'Conectada' : 'Desconectada', pDevice: on ? 'PT-210 · 58 mm' : 'Última usada: PT-210 · 58 mm',
+      searchBg: on ? '#fff' : '#F5B400', searchColor: on ? '#5A3414' : '#2B1D12',
+      searchBorder: on ? '2px solid #7A4A1F' : '0', searchShadow: on ? 'none' : '0 2px 0 #C99400',
+      testBg: on ? '#F6ECDD' : '#F3E9D8', testColor: on ? '#5A3414' : '#9C8A76'
+    };
+  }
+  flow(id, title) {
+    const step = this.state[id];
+    const go = s => this.setState({ [id]: s });
+    const ring = d => React.createElement('span', { key: d, style: { position: 'absolute', inset: 0, borderRadius: '50%', border: '3px solid #F5B400', animation: `ccPulse 2.1s ease-out ${d}s infinite`, opacity: 0 } });
+    return {
+      id, title, isIntro: step === 'intro', isSearching: step === 'search', isDone: step === 'done',
+      steps: STEPS.map((t, i) => ({ n: i + 1, text: t })),
+      pulse: step === 'search' ? React.createElement(React.Fragment, null, ring(0), ring(0.7), ring(1.4)) : null,
+      spinner: step === 'search' ? React.createElement('span', { style: { width: 18, height: 18, borderRadius: '50%', border: '3px solid #E3D3BA', borderTopColor: '#7A4A1F', animation: 'ccSpin .9s linear infinite', flexShrink: 0 } }) : null,
+      devices: DEVICES.map(([n, m]) => ({ name: n, meta: m, onClick: () => this.setState(s => ({ [id]: 'done', dev: { ...s.dev, [id]: n } })) })),
+      deviceName: this.state.dev[id] + ' · 58 mm',
+      start: () => go('search'), back: () => go('intro'), finish: () => go('intro')
+    };
+  }
+  renderVals() {
+    return {
+      settings: [this.settings('6a', 'Configuración · impresora conectada', true), this.settings('6b', 'Configuración · impresora desconectada', false)],
+      flows: [this.flow('6c', 'Emparejar · instrucciones'), this.flow('6d', 'Emparejar · buscando'), this.flow('6e', 'Emparejar · conectada')]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EFE6D6;color:#2B1D12;font-family:'Nunito',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#7A4A1F}a:hover{color:#2B1D12}
+</style>
+</helmet>
+<section style="padding:48px;display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+<sc-for list="{{ receipts }}" as="r" hint-placeholder-count="2">
+  <div id="{{ r.id }}" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="height:28px;padding:0 10px;border-radius:8px;background:#5A3414;color:#FFC72C;font:800 14px 'JetBrains Mono',monospace;display:flex;align-items:center">{{ r.id }}</span>
+      <span style="font-size:17px;font-weight:800;color:#5A3414">{{ r.title }}</span>
+    </div>
+    <div style="align-self:flex-start;display:flex;flex-direction:column;filter:drop-shadow(0 8px 18px rgba(90,52,20,.18))">
+      <div style="background:#fff;width:32ch;box-sizing:content-box;font-size:15px;padding:28px 18px 18px;font-family:'JetBrains Mono',monospace;color:#000;display:flex;flex-direction:column">
+        <sc-if value="{{ showGuide }}" hint-placeholder-val="{{ false }}">
+          <div style="white-space:pre;font-size:15px;line-height:1.5;color:#C0322B;border-bottom:1px dashed #C0322B;margin-bottom:6px">{{ ruler }}</div>
+        </sc-if>
+        <sc-for list="{{ r.lines }}" as="l" hint-placeholder-count="24">
+          <div style="white-space:pre;font-size:{{ l.size }};font-weight:{{ l.weight }};line-height:1.5;min-height:1.5em">{{ l.text }}</div>
+        </sc-for>
+      </div>
+      <div style="height:12px;background:linear-gradient(-45deg,transparent 8px,#fff 0) 0 0/16px 12px repeat-x,linear-gradient(45deg,transparent 8px,#fff 0) 0 0/16px 12px repeat-x"></div>
+    </div>
+    <span style="max-width:324px;font-size:14px;font-weight:700;color:#6B5B4B;text-wrap:pretty">58 mm · 32 caracteres por línea · TOTAL a doble tamaño (16)</span>
+  </div>
+</sc-for>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showGuide&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Mostrar guía de 32 caracteres&quot;}}">
+const W = 32;
+const money = n => '$' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const center = (s, w = W) => ' '.repeat(Math.max(0, Math.floor((w - s.length) / 2))) + s;
+const lr = (a, b, w = W) => a + ' '.repeat(Math.max(1, w - a.length - b.length)) + b;
+const sep = '-'.repeat(W);
+const wrap = (s, w) => {
+  const out = []; let cur = '';
+  s.split(' ').forEach(word => {
+    if ((cur + ' ' + word).trim().length > w) { out.push(cur); cur = word; } else cur = (cur + ' ' + word).trim();
+  });
+  if (cur) out.push(cur);
+  return out;
+};
+const BIZ = { name: 'Arepas La Esquina', id: 'C.C./NIT 1.098.765.432', footer: '¡Gracias por su compra!' };
+
+function build(s) {
+  const L = [], add = (text, o = {}) => L.push({ text, ...o });
+  add(center(BIZ.name.toUpperCase()), { bold: true });
+  add(center(BIZ.id));
+  add(center('No responsable de IVA'));
+  add(sep);
+  add(center('Recibo de venta ' + s.receipt), { bold: true });
+  add('Fecha: ' + s.date);
+  add('Atendido por: ' + s.by);
+  add(sep);
+  const total = s.items.reduce((a, [q, , p]) => a + q * p, 0);
+  s.items.forEach(([q, name, p]) => {
+    const amt = money(q * p), qty = (q + ' ').padEnd(3);
+    const nameW = W - 3 - amt.length - 1;
+    const parts = wrap(name, nameW);
+    add(lr(qty + parts[0], amt));
+    parts.slice(1).forEach(x => add('   ' + x));
+  });
+  add(sep);
+  add(lr('TOTAL', money(total), 16), { big: true, bold: true });
+  add(lr('Medio de pago:', s.method));
+  if (s.paid) { add(lr('Paga con:', money(s.paid))); add(lr('Vueltas:', money(s.paid - total))); }
+  add(sep);
+  add(center(BIZ.footer));
+  add(''); add('');
+  L.forEach(l => { const max = l.big ? 16 : W; if (l.text.length > max) console.warn('Línea excede ' + max + ':', l.text); });
+  return L.map(l => ({ text: l.text, size: l.big ? '30px' : '15px', weight: l.bold ? 800 : 500 }));
+}
+
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showGuide: this.props.showGuide ?? false,
+      ruler: '12345678901234567890123456789012',
+      receipts: [
+        { id: '8a', title: 'Efectivo con vueltas', lines: build({ receipt: 'A-0042', date: '22/09/2026 12:46 p. m.', by: 'Carlos', method: 'Efectivo', paid: 25000,
+          items: [[1, 'Arepa mixta', 11000], [1, 'Arepa de queso', 5000], [1, 'Gaseosa', 3000]] }) },
+        { id: '8b', title: 'Pago digital · nombre largo', lines: build({ receipt: 'A-0040', date: '22/09/2026 12:31 p. m.', by: 'Laura', method: 'Daviplata',
+          items: [[1, 'Arepa rellena de carne', 9000], [1, 'Jugo natural', 4500]] }) }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -11,20 +11,32 @@
   --color-maiz-700: #C99400;  /* sombra inferior del botón primario */
   --color-maiz-on-dark: #FFC72C; /* acento sobre tostado */
 
+  /* Colores — ilustración (arepa del login) */
+  --color-arepa: #F2BE3C;
+  --color-arepa-borde: #E3A527;
+  --color-arepa-grano: #C98A2B;
+  --color-arepa-grano-oscuro: #B97A22;
+
   --color-tostado-100: #F6ECDD; /* botón tonal, botón de ícono */
   --color-tostado-200: #EEDFC8; /* tonal presionado */
   --color-tostado-500: #7A4A1F; /* secundario: bordes, íconos, enlaces */
   --color-tostado-700: #5A3414; /* títulos, tarjeta de resumen */
   --color-tostado-on-dark: #F3DDBE; /* texto secundario sobre tostado */
+  --color-tostado-on-dark-suave: #E6CBA6; /* contadores sobre tarjeta tostada */
 
   /* Colores — neutros */
   --color-crema: #FFF8EC;       /* fondo de la app */
   --color-superficie: #FFFFFF;  /* tarjetas, barras, campos */
+  --color-superficie-inactiva: #FAF5EC; /* fila de producto inactivo */
+  --color-superficie-anulada: #FCF8F2;  /* fila de venta anulada */
   --color-borde: #EFE3CF;       /* divisores */
   --color-borde-fuerte: #E3D3BA;/* borde de campos y chips */
+  --color-borde-medio: #CDB99C; /* borde del interruptor apagado */
   --color-tinta: #2B1D12;       /* texto principal */
   --color-tinta-suave: #6B5B4B; /* texto secundario */
   --color-tinta-tenue: #9C8A76; /* placeholder, deshabilitado */
+  --color-tinta-apagada: #B7A690; /* enlaces / acciones deshabilitadas */
+  --color-icono-tenue: #B79C7C; /* íconos de vacío, anillo de radio inactivo */
   --color-deshabilitado: #F3E9D8;
 
   /* Colores — estados */
@@ -49,9 +61,13 @@
   --text-body: 16px;       --text-body--line-height: 1.4;
   --text-item: 17px;       --text-item--line-height: 1.25;
   --text-body-lg: 18px;    --text-body-lg--line-height: 1.3;
+  /* Nombre en ProductCard (mismo tamaño que body-lg, interlineado más cerrado) */
+  --text-nombre-producto: 18px; --text-nombre-producto--line-height: 1.2;
+  --text-badge: 19px;      --text-badge--line-height: 1; /* contador qty en ProductCard */
   --text-title-sm: 20px;   --text-title-sm--line-height: 1.2;
   --text-price: 22px;      --text-price--line-height: 1.1;
   --text-title: 24px;      --text-title--line-height: 1.2;
+  --text-money: 26px;      --text-money--line-height: 1.1;  /* MoneyField md */
   --text-title-lg: 28px;   --text-title-lg--line-height: 1.15;
   --text-total-sm: 36px;   --text-total-sm--line-height: 1;
   --text-total: 48px;      --text-total--line-height: 1.05;
@@ -65,17 +81,36 @@
   /* Espaciado (base 4px de Tailwind se mantiene) + medidas táctiles */
   --spacing-touch: 48px;     /* mínimo para cualquier botón */
   --spacing-touch-lg: 56px;  /* campos y botones secundarios */
-  --spacing-cta: 60px;       /* botón primario (Cobrar, Guardar) */
-  --spacing-topbar: 64px;
+  --spacing-cta: 60px;       /* botón primario (Cobrar, Guardar) · MoneyField md */
+  --spacing-keypad: 50px;    /* tecla del NumericKeypad */
+  --spacing-topbar: 64px;    /* barra superior · MoneyField lg */
   --spacing-navbar: 72px;
   --spacing-fab: 64px;
   --spacing-gutter: 16px;    /* margen lateral de pantalla */
+  --spacing-switch: 52px;    /* ancho de la pista del interruptor · alto radio-list */
+  --spacing-switch-h: 32px;  /* alto de la pista */
+  --spacing-switch-pad: 3px; /* padding horizontal de la pista */
+  --spacing-knob: 22px;      /* perilla del interruptor · anillo de radio */
+  --spacing-switch-travel: 20px; /* recorrido de la perilla (encendido) */
+  --spacing-tarjeta-producto: 120px; /* min-height ProductCard */
+  --spacing-lienzo: 390px;   /* ancho de diseño (demos de barras) */
+  --spacing-asa-alto: 5px;   /* asa de BottomSheet */
+  --spacing-asa-ancho: 40px; /* asa de BottomSheet · tope superior de la hoja */
+  --spacing-navbar-safe: calc(var(--spacing-navbar) + env(safe-area-inset-bottom, 0px));
+  --spacing-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --spacing-hoja-pad-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+
+  /* Escala */
+  --scale-press: 0.97; /* ProductCard al tocar */
 
   /* Radios */
   --radius-sm: 8px;
   --radius-md: 10px;   /* botón dentro de un contenedor segmentado */
   --radius-lg: 12px;   /* tarjetas, botones, campos, hojas inferiores */
   --radius-pill: 999px;
+
+  /* Alturas máximas */
+  --max-height-hoja: calc(100% - 40px); /* BottomSheet: deja 40px de aire arriba */
 
   /* Sombras */
   --shadow-card: 0 2px 8px rgb(90 52 20 / 0.08);
@@ -84,5 +119,13 @@
   --shadow-sheet: 0 -8px 24px rgb(43 29 18 / 0.20);
   --shadow-fab: 0 6px 16px rgb(90 52 20 / 0.30);
   --shadow-primary: 0 2px 0 #C99400;
+  --shadow-primary-pressed: 0 1px 0 #C99400; /* botón primario en :active */
   --shadow-focus: 0 0 0 4px rgb(245 180 0 / 0.35);
+  --shadow-knob: 0 1px 3px rgb(43 29 18 / 0.25);
+  --shadow-badge: 0 2px 6px rgb(90 52 20 / 0.25); /* contador qty ProductCard */
+  --shadow-segmento: 0 1px 3px rgb(90 52 20 / 0.2); /* opción segmentada seleccionada */
+  --shadow-tecla: 0 1px 3px rgb(90 52 20 / 0.12); /* botón − del QuantityStepper */
+
+  /* Underline offset (Button link) */
+  --text-underline-offset-enlace: 3px;
 }

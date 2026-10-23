@@ -35,6 +35,7 @@ import { TopBar } from '../../components/ui/TopBar'
 import { UserBadge } from '../../components/ui/UserBadge'
 import { VentaListItem } from '../../components/ui/VentaListItem'
 import { VueltasBanner } from '../../components/ui/VueltasBanner'
+import { resetDbAndSeed } from '../../lib/db'
 import { formatCOP } from '../../lib/format'
 import {
   amountToDigits,
@@ -122,9 +123,30 @@ export default function UiKitPage() {
   const [productoActivo, setProductoActivo] = useState(true)
   const [productoInactivo, setProductoInactivo] = useState(false)
   const [navTab, setNavTab] = useState<BottomNavTab>('/vender')
+  const [reseteandoDb, setReseteandoDb] = useState(false)
 
   const keypadAmount = digitsToAmount(keypadDigits)
   const demoTotal = 19_000
+
+  async function handleResetDb() {
+    if (reseteandoDb) return
+    setReseteandoDb(true)
+    try {
+      await resetDbAndSeed()
+      toast({
+        message: 'Base local borrada y ejemplos cargados',
+        variant: 'success',
+        icon: 'database',
+      })
+      window.location.assign(ROUTES.vender)
+    } catch {
+      toast({
+        message: 'No se pudo reiniciar la base local',
+        variant: 'error',
+      })
+      setReseteandoDb(false)
+    }
+  }
 
   return (
     <div className="min-h-dvh bg-crema text-tinta">
@@ -141,6 +163,25 @@ export default function UiKitPage() {
             arepas: una mano, sol y hora pico.
           </p>
         </header>
+
+        <Section title="Datos locales">
+          <DemoCard>
+            <DemoLabel>IndexedDB · solo desarrollo</DemoLabel>
+            <p className="mb-4 text-body font-semibold text-tinta-suave">
+              Borra la base IndexedDB y vuelve a cargar los datos de ejemplo.
+              Luego redirige a Vender.
+            </p>
+            <Button
+              variant="danger"
+              disabled={reseteandoDb}
+              onClick={() => void handleResetDb()}
+            >
+              {reseteandoDb
+                ? 'Reiniciando…'
+                : 'Borrar base y cargar ejemplos'}
+            </Button>
+          </DemoCard>
+        </Section>
 
         {/* 1. Colores */}
         <Section title="Colores">

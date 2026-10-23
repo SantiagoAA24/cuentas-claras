@@ -1,13 +1,10 @@
-import { createMemoryData } from './memory/createMemoryData'
+import { createAuthRepo } from './dexie/authRepo'
+import { createConfiguracionRepo } from './dexie/configuracionRepo'
+import { createProductosRepo } from './dexie/productosRepo'
+import { createVentasRepo } from './dexie/ventasRepo'
+import { db } from '../lib/db'
 
-const data = createMemoryData()
-
-export const productosRepo = data.productosRepo
-export const ventasRepo = data.ventasRepo
-export const configuracionRepo = data.configuracionRepo
-export const authRepo = data.authRepo
-
-/** Suscripción a cambios del store en memoria (para useLiveQuery). */
-export function subscribeData(listener: () => void): () => void {
-  return data.store.subscribe(listener)
-}
+export const productosRepo = createProductosRepo(db)
+export const ventasRepo = createVentasRepo(db)
+export const configuracionRepo = createConfiguracionRepo(db)
+export const authRepo = createAuthRepo()

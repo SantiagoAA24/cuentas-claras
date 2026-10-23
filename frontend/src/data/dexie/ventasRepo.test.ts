@@ -1,12 +1,22 @@
-import { beforeEach, describe, expect, it } from 'vitest'
-import { crearSeed } from '../../mocks/data'
-import { createMemoryData, type MemoryData } from './createMemoryData'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import {
+  createDexieData,
+  type DexieData,
+} from './createDexieData'
 
-describe('ventasRepo (memoria)', () => {
-  let data: MemoryData
+describe('ventasRepo (Dexie)', () => {
+  let data: DexieData
 
-  beforeEach(() => {
-    data = createMemoryData({ delayMs: 0, seed: crearSeed() })
+  beforeEach(async () => {
+    data = await createDexieData({
+      dbName: `cc-test-ventas-${crypto.randomUUID()}`,
+      seed: true,
+    })
+  })
+
+  afterEach(async () => {
+    data.db.close()
+    await data.db.delete()
   })
 
   it('no permite anular una venta ya anulada', async () => {
@@ -37,7 +47,7 @@ describe('ventasRepo (memoria)', () => {
     ).rejects.toThrow(/motivo/)
   })
 
-  it('anula una venta vigente', async () => {
+  it('anula una venta vigente y encola venta.anular', async () => {
     const venta = (await data.ventasRepo.listarDelDia()).find(
       (v) => v.recibo === 'A-0042',
     )
@@ -52,11 +62,20 @@ describe('ventasRepo (memoria)', () => {
       por: 'Carlos',
     })
     expect(result.anulada?.en).toBeTruthy()
+    expect(result.sincronizada).toBe(false)
+
+    const cola = await data.db.colaSync
+      .where('operacion')
+      .equals('venta.anular')
+      .toArray()
+    expect(cola.some((e) => e.entidadId === venta!.id)).toBe(true)
   })
 
-  it('registrar incrementa el consecutivo y formatea el recibo', async () => {
+  it('registrar incrementa el consecutivo, formatea el recibo y encola', async () => {
     const peekAntes = await data.ventasRepo.obtenerSiguienteConsecutivo()
     expect(peekAntes).toBe('A-0043')
+
+    const pendientesAntes = await data.ventasRepo.contarPendientes()
 
     const venta = await data.ventasRepo.registrar({
       items: [
@@ -81,6 +100,41 @@ describe('ventasRepo (memoria)', () => {
 
     const peekDespues = await data.ventasRepo.obtenerSiguienteConsecutivo()
     expect(peekDespues).toBe('A-0044')
+
+    expect(await data.ventasRepo.contarPendientes()).toBe(pendientesAntes + 1)
+
+    const enCola = await data.db.colaSync
+      .where('entidadId')
+      .equals(venta.id)
+      .first()
+    expect(enCola?.operacion).toBe('venta.registrar')
+  })
+
+  it('dos registrar seguidos no saltan ni duplican consecutivos', async () => {
+    const input = {
+      items: [
+        {
+          productoId: 'x',
+          nombre: 'Arepa',
+          precioUnitario: 5000,
+          cantidad: 1,
+        },
+      ],
+      medioPago: 'Nequi' as const,
+      impreso: false,
+      registradaPor: 'Carlos',
+    }
+
+    const [a, b] = await Promise.all([
+      data.ventasRepo.registrar(input),
+      data.ventasRepo.registrar(input),
+    ])
+
+    const recibos = [a.recibo, b.recibo].sort()
+    expect(recibos).toEqual(['A-0043', 'A-0044'])
+
+    const config = await data.configuracionRepo.obtener()
+    expect(config.dispositivo.ultimoConsecutivo).toBe(44)
   })
 
   it('obtenerSiguienteConsecutivo no incrementa', async () => {
@@ -143,18 +197,15 @@ describe('ventasRepo (memoria)', () => {
     expect(config.dispositivo).toEqual({ prefijo: 'A', ultimoConsecutivo: 42 })
   })
 
-  it('contarPendientes incluye no sincronizadas del seed', async () => {
+  it('contarPendientes lee colaSync del seed', async () => {
     const n = await data.ventasRepo.contarPendientes()
     expect(n).toBe(2)
   })
 
-  it('sincronizarPendientes marca todas y retorna la cantidad', async () => {
+  it('sincronizarPendientes es no-op hasta el backend', async () => {
     const n = await data.ventasRepo.sincronizarPendientes()
-    expect(n).toBe(2)
-    expect(await data.ventasRepo.contarPendientes()).toBe(0)
-
-    const otra = await data.ventasRepo.sincronizarPendientes()
-    expect(otra).toBe(0)
+    expect(n).toBe(0)
+    expect(await data.ventasRepo.contarPendientes()).toBe(2)
   })
 
   it('marcarImpreso actualiza el flag', async () => {

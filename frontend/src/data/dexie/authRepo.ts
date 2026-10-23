@@ -1,21 +1,17 @@
+import { USUARIOS_SEED } from '../../mocks/data'
 import { CredencialesInvalidasError } from '../authErrors'
 import type { AuthRepository, AuthUser } from '../repositories'
-import type { MemoryStore } from './store'
 
-export function createAuthRepo(
-  store: MemoryStore,
-  delay: () => Promise<void>,
-): AuthRepository {
+/** Login local contra credenciales seed (sin tabla IndexedDB hasta el backend). */
+export function createAuthRepo(): AuthRepository {
   return {
     async login(usuario: string, password: string): Promise<AuthUser> {
-      await delay()
-
       const clave = usuario.trim().toLowerCase()
       if (clave === '' || password === '') {
         throw new CredencialesInvalidasError()
       }
 
-      const match = store.usuarios.find(
+      const match = USUARIOS_SEED.find(
         (u) => u.usuario.toLowerCase() === clave && u.password === password,
       )
 

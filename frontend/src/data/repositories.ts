@@ -29,10 +29,10 @@ export interface VentasRepository {
   anular(id: string, input: AnularVentaInput): Promise<Venta>
   /** Peek del próximo recibo; no incrementa el consecutivo. */
   obtenerSiguienteConsecutivo(): Promise<string>
-  /** Ventas con `sincronizada === false` (incluye anuladas). */
+  /** Entradas pendientes en colaSync (outbox). */
   contarPendientes(): Promise<number>
   /**
-   * Marca pendientes como sincronizadas (stub local hasta el backend).
+   * Stub hasta el backend: no drena la cola; siempre retorna 0.
    * @returns Cantidad sincronizada en esta corrida.
    */
   sincronizarPendientes(): Promise<number>

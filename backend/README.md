@@ -43,6 +43,16 @@ uv run alembic revision --autogenerate -m "descripcion"
 uv run alembic upgrade head
 ```
 
+## Semilla de desarrollo
+
+Tras migrar, carga el negocio de ejemplo (Arepas La Esquina), usuarios Carlos/Laura y el catálogo:
+
+```bash
+uv run python scripts/seed_dev.py
+```
+
+Es idempotente: si el negocio seed ya existe, no duplica. Credenciales: `carlos` / `laura`, contraseña `arepa12`.
+
 ## Correr el servidor
 
 Desde el directorio `backend/`:

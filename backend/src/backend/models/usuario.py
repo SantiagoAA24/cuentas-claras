@@ -11,6 +11,7 @@ class Usuario(SQLModel, table=True):
     __tablename__ = "usuarios"
     __table_args__ = (
         UniqueConstraint("negocio_id", "usuario", name="uq_usuarios_negocio_usuario"),
+        UniqueConstraint("usuario", name="uq_usuarios_usuario"),
         Index("ix_usuarios_negocio_id", "negocio_id"),
     )
 

@@ -19,6 +19,8 @@ Variables principales (ver `.env.example`):
 
 - `DATABASE_URL` — conexión Postgres (`postgresql+psycopg://…`)
 - `JWT_SECRET` — secreto para tokens
+- `JWT_ACCESS_MINUTOS` — duración del access token (default 15)
+- `JWT_REFRESH_DIAS` — duración del refresh token (default 30)
 - `CORS_ORIGINS` — orígenes permitidos (JSON), p. ej. Vite en desarrollo
 - `ENVIRONMENT` — `development` | `test` | `production`
 
@@ -41,6 +43,20 @@ Crear una revisión nueva tras cambiar modelos:
 ```bash
 uv run alembic revision --autogenerate -m "descripcion"
 uv run alembic upgrade head
+```
+
+## Crear negocio y usuario (CLI)
+
+No hay registro público. Alta por consola:
+
+```bash
+uv run python -m backend.cli crear-negocio \
+  --nombre "Arepas La Esquina" \
+  --documento "1.098.765.432" \
+  --pie-recibo "¡Gracias por su compra!" \
+  --usuario carlos \
+  --nombre-usuario Carlos \
+  --password arepa12
 ```
 
 ## Semilla de desarrollo

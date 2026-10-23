@@ -16,6 +16,8 @@ class Settings(BaseSettings):
         default="postgresql+psycopg://cc:cc@localhost:5433/cuentas_claras",
     )
     jwt_secret: str = Field(default="cambia-este-secreto-en-produccion")
+    jwt_access_minutos: int = Field(default=15)
+    jwt_refresh_dias: int = Field(default=30)
     cors_origins: list[str] = Field(
         default_factory=lambda: ["http://localhost:5173"],
     )

@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { formatCOP, formatFechaLarga, formatHora, formatRecibo } from './format'
+import {
+  formatAnuladaEn,
+  formatCOP,
+  formatFechaLarga,
+  formatHora,
+  formatRecibo,
+} from './format'
 
 describe('formatCOP', () => {
   it('formatea con punto de miles y sin decimales', () => {
@@ -64,5 +70,21 @@ describe('formatRecibo', () => {
 
   it('no trunca consecutivos de más de 4 dígitos', () => {
     expect(formatRecibo('B', 10042)).toBe('B-10042')
+  })
+})
+
+describe('formatAnuladaEn', () => {
+  it('usa hoy cuando es el mismo día', () => {
+    const en = new Date(2026, 8, 22, 12, 24)
+    const ahora = new Date(2026, 8, 22, 18, 0)
+    expect(formatAnuladaEn(en, ahora)).toBe('hoy, 12:24 p. m.')
+  })
+
+  it('usa fecha larga cuando es otro día', () => {
+    const en = new Date(2026, 8, 21, 12, 24)
+    const ahora = new Date(2026, 8, 22, 18, 0)
+    expect(formatAnuladaEn(en, ahora)).toBe(
+      'lunes 21 de septiembre · 12:24 p. m.',
+    )
   })
 })

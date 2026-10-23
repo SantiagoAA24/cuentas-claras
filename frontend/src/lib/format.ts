@@ -43,6 +43,25 @@ export function formatFechaLarga(fecha: Date): string {
   return `${DIAS[fecha.getDay()]} ${fecha.getDate()} de ${MESES[fecha.getMonth()]}`
 }
 
+function mismaClaveDia(a: Date, b: Date): boolean {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  )
+}
+
+/**
+ * Meta de anulación: "hoy, 12:24 p. m." si es el mismo día calendario;
+ * si no, "martes 22 de septiembre · 12:24 p. m.".
+ */
+export function formatAnuladaEn(fecha: Date, ahora: Date = new Date()): string {
+  if (mismaClaveDia(fecha, ahora)) {
+    return `hoy, ${formatHora(fecha)}`
+  }
+  return `${formatFechaLarga(fecha)} · ${formatHora(fecha)}`
+}
+
 /** Recibo: prefijo + consecutivo de 4 dígitos → "A-0042" */
 export function formatRecibo(prefijo: string, consecutivo: number): string {
   return `${prefijo}-${String(consecutivo).padStart(4, '0')}`

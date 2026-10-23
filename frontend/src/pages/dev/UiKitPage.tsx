@@ -1,15 +1,25 @@
 import { useState, type ChangeEvent, type ReactNode } from 'react'
+import { ROUTES } from '../../app/routes'
+import { AmountPresetBar } from '../../components/ui/AmountPresetBar'
+import { AnulacionBanner } from '../../components/ui/AnulacionBanner'
 import {
   BottomNav,
   type BottomNavTab,
 } from '../../components/ui/BottomNav'
+import { BottomActionBar } from '../../components/ui/BottomActionBar'
 import { BottomSheet } from '../../components/ui/BottomSheet'
 import { Button } from '../../components/ui/Button'
 import { Card, SectionTitle } from '../../components/ui/Card'
 import { ChipGroup } from '../../components/ui/Chip'
+import { DetalleSkeleton } from '../../components/ui/DetalleSkeleton'
+import { EmptyState } from '../../components/ui/EmptyState'
+import { Fab } from '../../components/ui/Fab'
 import { Icon } from '../../components/ui/Icon'
 import { IconButton } from '../../components/ui/IconButton'
 import { MoneyField } from '../../components/ui/MoneyField'
+import { ProductoListItem } from '../../components/ui/ProductoListItem'
+import { ProductosListSkeleton } from '../../components/ui/ProductosListSkeleton'
+import { SearchField } from '../../components/ui/SearchField'
 import { NumericKeypad } from '../../components/ui/NumericKeypad'
 import { OfflineBanner } from '../../components/ui/OfflineBanner'
 import { PasswordField } from '../../components/ui/PasswordField'
@@ -17,10 +27,14 @@ import { ProductCard } from '../../components/ui/ProductCard'
 import { QuantityStepper } from '../../components/ui/QuantityStepper'
 import { SegmentedControl } from '../../components/ui/SegmentedControl'
 import { StatusChip } from '../../components/ui/StatusChip'
+import { SuccessMark } from '../../components/ui/SuccessMark'
 import { Switch, SwitchRow } from '../../components/ui/Switch'
 import { TextField } from '../../components/ui/TextField'
 import { Toaster, useToast } from '../../components/ui/Toast'
 import { TopBar } from '../../components/ui/TopBar'
+import { UserBadge } from '../../components/ui/UserBadge'
+import { VentaListItem } from '../../components/ui/VentaListItem'
+import { VueltasBanner } from '../../components/ui/VueltasBanner'
 import { formatCOP } from '../../lib/format'
 import {
   amountToDigits,
@@ -101,11 +115,16 @@ export default function UiKitPage() {
   const [switchRowOn, setSwitchRowOn] = useState(false)
   const [keypadDigits, setKeypadDigits] = useState('15000')
   const [moneyValue, setMoneyValue] = useState<number | null>(15000)
+  const [presetAmount, setPresetAmount] = useState<number | null>(20_000)
   const [textValue, setTextValue] = useState('Arepa de queso')
   const [passwordValue, setPasswordValue] = useState('secreto')
+  const [searchValue, setSearchValue] = useState('')
+  const [productoActivo, setProductoActivo] = useState(true)
+  const [productoInactivo, setProductoInactivo] = useState(false)
   const [navTab, setNavTab] = useState<BottomNavTab>('/vender')
 
   const keypadAmount = digitsToAmount(keypadDigits)
+  const demoTotal = 19_000
 
   return (
     <div className="min-h-dvh bg-crema text-tinta">
@@ -361,6 +380,15 @@ export default function UiKitPage() {
                 error="Usuario o contraseña incorrectos"
               />
             </DemoCard>
+            <DemoCard>
+              <DemoLabel>SearchField</DemoLabel>
+              <SearchField
+                value={searchValue}
+                onChange={setSearchValue}
+                placeholder="Buscar producto"
+                aria-label="Buscar producto"
+              />
+            </DemoCard>
           </div>
         </Section>
 
@@ -458,32 +486,76 @@ export default function UiKitPage() {
 
           <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
             <div>
-              <DemoLabel>Venta en historial</DemoLabel>
-              <Card padding="md">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-item font-black text-tinta">
-                      A-0142
-                    </span>
-                    <span className="text-caption font-bold text-tinta-suave">
-                      12:46 p. m.
-                    </span>
-                  </div>
-                  <StatusChip status="sincronizado" size="sm" />
-                </div>
-                <p className="mt-2 text-body font-semibold text-tinta-suave">
-                  2 arepas · 1 jugo
-                </p>
-                <div className="mt-3 flex items-center justify-between">
-                  <span className="inline-flex items-center gap-1 text-body font-extrabold text-tostado-700">
-                    <Icon name="payments" size={20} />
-                    Efectivo
-                  </span>
-                  <span className="text-price font-black tabular-nums text-tinta">
-                    {formatCOP(14000)}
-                  </span>
-                </div>
+              <DemoLabel>VentaListItem</DemoLabel>
+              <Card padding="none">
+                <Card.List>
+                  <VentaListItem
+                    to={ROUTES.historialDetalle('demo-vigente')}
+                    hora="12:46 p. m."
+                    recibo="A-0042"
+                    resumenItems="1 Arepa mixta, 1 Arepa de queso, 1 Gaseosa"
+                    medioPago="Efectivo"
+                    total={19000}
+                    pendiente
+                  />
+                  <VentaListItem
+                    to={ROUTES.historialDetalle('demo-nequi')}
+                    hora="11:22 a. m."
+                    recibo="A-0035"
+                    resumenItems="1 Arepa de huevo, 1 Café"
+                    medioPago="Nequi"
+                    total={9000}
+                  />
+                  <VentaListItem
+                    to={ROUTES.historialDetalle('demo-anulada')}
+                    hora="12:20 p. m."
+                    recibo="A-0039"
+                    resumenItems="3 Arepa de huevo"
+                    medioPago="Efectivo"
+                    total={21000}
+                    anulada
+                  />
+                </Card.List>
               </Card>
+            </div>
+
+            <div>
+              <DemoLabel>ProductoListItem</DemoLabel>
+              <Card padding="none">
+                <Card.List>
+                  <ProductoListItem
+                    nombre="Arepa de huevo"
+                    meta="Arepas"
+                    precio={7000}
+                    activo={productoActivo}
+                    onEdit={() => {}}
+                    onActivoChange={setProductoActivo}
+                  />
+                  <ProductoListItem
+                    nombre="Chocolate"
+                    meta="Bebidas · Inactivo · no aparece en Vender"
+                    precio={3000}
+                    activo={productoInactivo}
+                    onEdit={() => {}}
+                    onActivoChange={setProductoInactivo}
+                  />
+                </Card.List>
+              </Card>
+            </div>
+
+            <div>
+              <DemoLabel>EmptyState illustrated</DemoLabel>
+              <EmptyState
+                illustrated
+                icon="receipt_long"
+                title="Aún no hay ventas hoy"
+                description="Las ventas que registres aparecerán aquí con su recibo y medio de pago."
+                action={
+                  <Button variant="primary" size="lg" icon="point_of_sale">
+                    Ir a Vender
+                  </Button>
+                }
+              />
             </div>
 
             <div>
@@ -503,6 +575,59 @@ export default function UiKitPage() {
               <Card variant="alert-danger" icon="print_disabled">
                 No encontramos la impresora. La venta quedó guardada.
               </Card>
+            </div>
+
+            <div>
+              <DemoLabel>AnulacionBanner · 4c</DemoLabel>
+              <AnulacionBanner
+                motivo="Producto equivocado"
+                meta="Anulada por Laura · hoy, 12:24 p. m."
+              />
+            </div>
+
+            <div>
+              <DemoLabel>UserBadge</DemoLabel>
+              <DemoCard>
+                <UserBadge nombre="Carlos" />
+              </DemoCard>
+            </div>
+
+            <div>
+              <DemoLabel>BottomActionBar</DemoLabel>
+              <div className="overflow-hidden rounded-lg border border-borde">
+                <BottomActionBar>
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    icon="print"
+                    className="min-w-0 flex-[1.2]"
+                  >
+                    Reimprimir recibo
+                  </Button>
+                  <Button
+                    variant="danger"
+                    size="lg"
+                    icon="block"
+                    className="min-w-0 flex-1"
+                  >
+                    Anular venta
+                  </Button>
+                </BottomActionBar>
+              </div>
+            </div>
+
+            <div>
+              <DemoLabel>DetalleSkeleton</DemoLabel>
+              <div className="h-80 overflow-hidden rounded-lg border border-borde">
+                <DetalleSkeleton />
+              </div>
+            </div>
+
+            <div>
+              <DemoLabel>ProductosListSkeleton</DemoLabel>
+              <div className="overflow-hidden rounded-lg border border-borde p-4">
+                <ProductosListSkeleton rows={4} />
+              </div>
             </div>
 
             <div>
@@ -611,25 +736,61 @@ export default function UiKitPage() {
                 onCheckedChange={setSwitchRowOn}
               />
             </DemoCard>
+            <DemoCard>
+              <DemoLabel>Fab</DemoLabel>
+              <Fab aria-label="Agregar producto" onClick={() => {}} />
+            </DemoCard>
           </div>
         </Section>
 
-        {/* 9. Teclado */}
-        <Section title="Teclado numérico">
-          <DemoCard className="mx-auto max-w-sm rounded-lg bg-superficie p-4 shadow-card">
-            <MoneyField
-              label="Recibido"
-              size="lg"
-              value={keypadAmount}
-              onChange={(v) => setKeypadDigits(amountToDigits(v))}
-              readOnly
-            />
-            <NumericKeypad
-              className="mt-4"
-              value={keypadDigits}
-              onChange={setKeypadDigits}
-            />
-          </DemoCard>
+        {/* 9. Cobro · montos y teclado */}
+        <Section title="Cobro · montos y teclado">
+          <div className="flex flex-col gap-4">
+            <DemoCard>
+              <DemoLabel>VueltasBanner</DemoLabel>
+              <div className="flex flex-col gap-2">
+                <VueltasBanner total={demoTotal} pagaCon={null} />
+                <VueltasBanner total={demoTotal} pagaCon={10_000} />
+                <VueltasBanner total={demoTotal} pagaCon={25_000} />
+              </div>
+            </DemoCard>
+            <DemoCard>
+              <DemoLabel>AmountPresetBar + SuccessMark</DemoLabel>
+              <AmountPresetBar
+                exactAmount={demoTotal}
+                value={presetAmount}
+                onChange={setPresetAmount}
+              />
+              <div className="mt-4 flex justify-center">
+                <SuccessMark />
+              </div>
+            </DemoCard>
+            <DemoCard className="mx-auto max-w-sm rounded-lg bg-superficie p-4 shadow-card">
+              <MoneyField
+                label="Recibido"
+                size="lg"
+                value={keypadAmount}
+                onChange={(v) => setKeypadDigits(amountToDigits(v))}
+                readOnly
+              />
+              <AmountPresetBar
+                className="mt-2"
+                exactAmount={demoTotal}
+                value={keypadAmount}
+                onChange={(n) => setKeypadDigits(amountToDigits(n))}
+              />
+              <VueltasBanner
+                className="mt-2"
+                total={demoTotal}
+                pagaCon={keypadAmount}
+              />
+              <NumericKeypad
+                className="mt-4"
+                value={keypadDigits}
+                onChange={setKeypadDigits}
+              />
+            </DemoCard>
+          </div>
         </Section>
 
         {/* 10. BottomSheet */}

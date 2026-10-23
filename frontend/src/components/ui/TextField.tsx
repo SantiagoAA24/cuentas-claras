@@ -12,6 +12,11 @@ import { Icon } from './Icon'
 type TextFieldShared = {
   label: string
   error?: string
+  /**
+   * Marca el campo inválido (borde rojo + aria-invalid) sin caption.
+   * Útil cuando el mensaje de error es compartido (p. ej. login 7b).
+   */
+  invalid?: boolean
   help?: string
   trailing?: ReactNode
   className?: string
@@ -37,6 +42,7 @@ export const TextField = forwardRef<
   const {
     label,
     error,
+    invalid = false,
     help,
     trailing,
     className,
@@ -50,8 +56,13 @@ export const TextField = forwardRef<
   const id = idProp ?? generatedId
   const errorId = `${id}-error`
   const helpId = `${id}-help`
-  const describedBy = error ? errorId : help ? helpId : undefined
-  const hasError = error != null && error !== ''
+  const hasErrorMessage = error != null && error !== ''
+  const hasError = hasErrorMessage || invalid
+  const describedBy = hasErrorMessage
+    ? errorId
+    : help
+      ? helpId
+      : undefined
 
   const shellClass = cn(
     'flex rounded-lg border-2 bg-superficie',
@@ -97,7 +108,7 @@ export const TextField = forwardRef<
         {trailing}
       </div>
 
-      {hasError ? (
+      {hasErrorMessage ? (
         <p
           id={errorId}
           className="flex items-center gap-1 text-caption font-extrabold text-peligro"

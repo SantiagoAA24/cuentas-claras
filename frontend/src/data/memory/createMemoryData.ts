@@ -1,9 +1,11 @@
 import type { MemorySeed } from '../../mocks/data'
 import type {
+  AuthRepository,
   ConfiguracionRepository,
   ProductosRepository,
   VentasRepository,
 } from '../repositories'
+import { createAuthRepo } from './authRepo'
 import { createConfiguracionRepo } from './configuracionRepo'
 import { createDelay, DEFAULT_DELAY_MS } from './delay'
 import { createProductosRepo } from './productosRepo'
@@ -15,6 +17,7 @@ export type MemoryData = {
   productosRepo: ProductosRepository
   ventasRepo: VentasRepository
   configuracionRepo: ConfiguracionRepository
+  authRepo: AuthRepository
 }
 
 export type CreateMemoryDataOpts = {
@@ -34,5 +37,6 @@ export function createMemoryData(
     productosRepo: createProductosRepo(store, delay),
     ventasRepo: createVentasRepo(store, delay),
     configuracionRepo: createConfiguracionRepo(store, delay),
+    authRepo: createAuthRepo(store, delay),
   }
 }

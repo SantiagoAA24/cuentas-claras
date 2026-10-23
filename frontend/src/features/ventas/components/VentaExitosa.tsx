@@ -2,19 +2,59 @@ import { Card } from '../../../components/ui/Card'
 import { Icon } from '../../../components/ui/Icon'
 import { SuccessMark } from '../../../components/ui/SuccessMark'
 import type { Venta } from '../../../domain/types'
-import { formatCOP } from '../../../lib/format'
 import { cn } from '../../../lib/cn'
+import { formatCOP } from '../../../lib/format'
+import type { PrintStatus } from '../hooks/useCobroState'
 
 type VentaExitosaProps = {
   venta: Venta
+  printStatus: PrintStatus
 }
 
-export function VentaExitosa({ venta }: VentaExitosaProps) {
+function printLabel(status: PrintStatus): {
+  text: string
+  icon: string
+  tone: 'exito' | 'suave' | 'pendiente'
+} {
+  switch (status) {
+    case 'imprimiendo':
+      return {
+        text: 'Imprimiendo…',
+        icon: 'print',
+        tone: 'pendiente',
+      }
+    case 'impreso':
+      return {
+        text: 'Recibo impreso',
+        icon: 'print',
+        tone: 'exito',
+      }
+    case 'fallo':
+      // Cubierto por 9d; texto provisional debajo de la hoja.
+      return {
+        text: 'Imprimiendo…',
+        icon: 'print',
+        tone: 'pendiente',
+      }
+    case 'sin-imprimir':
+    case 'idle':
+    default:
+      return {
+        text: 'Guardada sin imprimir',
+        icon: 'print_disabled',
+        tone: 'suave',
+      }
+  }
+}
+
+export function VentaExitosa({ venta, printStatus }: VentaExitosaProps) {
   const showVueltas =
     venta.medioPago === 'Efectivo' &&
     venta.vueltas != null &&
     venta.vueltas > 0 &&
     venta.pagaCon != null
+
+  const print = printLabel(printStatus)
 
   return (
     <div className="flex flex-col gap-3">
@@ -62,14 +102,13 @@ export function VentaExitosa({ venta }: VentaExitosaProps) {
       <div
         className={cn(
           'flex items-center justify-center gap-1.5 text-label font-extrabold',
-          venta.impreso ? 'text-exito' : 'text-tinta-suave',
+          print.tone === 'exito' && 'text-exito',
+          print.tone === 'suave' && 'text-tinta-suave',
+          print.tone === 'pendiente' && 'text-pendiente',
         )}
       >
-        <Icon
-          name={venta.impreso ? 'print' : 'print_disabled'}
-          size={20}
-        />
-        {venta.impreso ? 'Recibo impreso' : 'Guardada sin imprimir'}
+        <Icon name={print.icon} size={20} />
+        {print.text}
       </div>
     </div>
   )

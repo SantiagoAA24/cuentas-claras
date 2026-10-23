@@ -103,6 +103,29 @@ export const CONFIGURACION_SEED: Configuracion = {
   },
 }
 
+/** Credenciales del login mock (solo capa data; las pantallas usan authRepo). */
+export type UsuarioAuthSeed = {
+  id: string
+  nombre: string
+  usuario: string
+  password: string
+}
+
+export const USUARIOS_SEED: UsuarioAuthSeed[] = [
+  {
+    id: '00000000-0000-4000-8000-000000000001',
+    nombre: 'Carlos',
+    usuario: 'carlos',
+    password: 'arepa12',
+  },
+  {
+    id: '00000000-0000-4000-8000-000000000002',
+    nombre: 'Laura',
+    usuario: 'laura',
+    password: 'arepa12',
+  },
+]
+
 /** Fecha de hoy a la hora local indicada (calendario del dispositivo). */
 export function hoyALas(horas: number, minutos: number): string {
   const d = new Date()
@@ -294,6 +317,7 @@ export type MemorySeed = {
   productos: Producto[]
   ventas: Venta[]
   configuracion: Configuracion
+  usuarios: UsuarioAuthSeed[]
 }
 
 export function crearSeed(): MemorySeed {
@@ -301,5 +325,6 @@ export function crearSeed(): MemorySeed {
     productos: structuredClone(PRODUCTOS_SEED),
     ventas: crearVentasSeed(),
     configuracion: structuredClone(CONFIGURACION_SEED),
+    usuarios: structuredClone(USUARIOS_SEED),
   }
 }

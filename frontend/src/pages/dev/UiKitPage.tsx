@@ -651,7 +651,7 @@ export default function UiKitPage() {
               <DemoLabel>TopBar · en línea</DemoLabel>
               <div className="overflow-hidden rounded-lg border border-borde shadow-card">
                 <TopBar
-                  online
+                  connectionKind="online"
                   printerConnected
                   pendingCount={0}
                   onSettings={() =>
@@ -667,7 +667,7 @@ export default function UiKitPage() {
               <DemoLabel>TopBar · sin conexión + pendientes</DemoLabel>
               <div className="overflow-hidden rounded-lg border border-borde shadow-card">
                 <TopBar
-                  online={false}
+                  connectionKind="offline"
                   printerConnected={false}
                   pendingCount={3}
                   onSettings={() => {}}

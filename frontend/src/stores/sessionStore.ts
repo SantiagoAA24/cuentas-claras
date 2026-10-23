@@ -1,33 +1,24 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import type { AuthUser } from '../data/repositories'
 
 /**
- * Sesión simulada para el layout y la protección de rutas.
- * TODO: reemplazar con autenticación real (API + token).
+ * Sesión del usuario autenticado.
+ * TODO: reemplazar persistencia local con token de API real.
  */
-export type SessionUser = {
-  id: string
-  nombre: string
-  usuario: string
-}
+export type SessionUser = AuthUser
 
 type SessionState = {
   user: SessionUser | null
-  login: () => void
+  login: (user: SessionUser) => void
   logout: () => void
-}
-
-const FAKE_USER: SessionUser = {
-  id: '00000000-0000-4000-8000-000000000001',
-  nombre: 'Carlos',
-  usuario: 'carlos',
 }
 
 export const useSessionStore = create<SessionState>()(
   persist(
     (set) => ({
       user: null,
-      login: () => set({ user: FAKE_USER }),
+      login: (user) => set({ user }),
       logout: () => set({ user: null }),
     }),
     { name: 'cc:sesion' },

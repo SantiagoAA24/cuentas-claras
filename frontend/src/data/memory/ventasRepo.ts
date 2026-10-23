@@ -83,6 +83,8 @@ export function createVentasRepo(
         por: input.por,
         en: new Date().toISOString(),
       }
+      // La anulación debe volver a la cola de sync.
+      venta.sincronizada = false
 
       store.notify()
       return structuredClone(venta)
@@ -92,6 +94,35 @@ export function createVentasRepo(
       await delay()
       const { prefijo, ultimoConsecutivo } = store.configuracion.dispositivo
       return formatearRecibo(prefijo, ultimoConsecutivo + 1)
+    },
+
+    async contarPendientes(): Promise<number> {
+      await delay()
+      return store.ventas.filter((v) => !v.sincronizada).length
+    },
+
+    async sincronizarPendientes(): Promise<number> {
+      await delay()
+      let n = 0
+      for (const venta of store.ventas) {
+        if (!venta.sincronizada) {
+          venta.sincronizada = true
+          n += 1
+        }
+      }
+      if (n > 0) store.notify()
+      return n
+    },
+
+    async marcarImpreso(id: string, impreso: boolean): Promise<Venta> {
+      await delay()
+      const venta = store.ventas.find((v) => v.id === id)
+      if (!venta) {
+        throw new Error(`No se encontró la venta ${id}`)
+      }
+      venta.impreso = impreso
+      store.notify()
+      return structuredClone(venta)
     },
   }
 }

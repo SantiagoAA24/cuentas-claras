@@ -10,6 +10,7 @@ import { TextField } from './TextField'
 type PasswordFieldProps = {
   label: string
   error?: string
+  invalid?: boolean
   help?: string
   className?: string
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'className' | 'type'>

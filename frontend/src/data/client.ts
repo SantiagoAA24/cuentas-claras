@@ -5,6 +5,7 @@ const data = createMemoryData()
 export const productosRepo = data.productosRepo
 export const ventasRepo = data.ventasRepo
 export const configuracionRepo = data.configuracionRepo
+export const authRepo = data.authRepo
 
 /** Suscripción a cambios del store en memoria (para useLiveQuery). */
 export function subscribeData(listener: () => void): () => void {

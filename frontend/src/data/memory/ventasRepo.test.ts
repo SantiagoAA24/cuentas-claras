@@ -142,4 +142,31 @@ describe('ventasRepo (memoria)', () => {
     expect(config.negocio.nombre).toBe('Nuevo nombre')
     expect(config.dispositivo).toEqual({ prefijo: 'A', ultimoConsecutivo: 42 })
   })
+
+  it('contarPendientes incluye no sincronizadas del seed', async () => {
+    const n = await data.ventasRepo.contarPendientes()
+    expect(n).toBe(2)
+  })
+
+  it('sincronizarPendientes marca todas y retorna la cantidad', async () => {
+    const n = await data.ventasRepo.sincronizarPendientes()
+    expect(n).toBe(2)
+    expect(await data.ventasRepo.contarPendientes()).toBe(0)
+
+    const otra = await data.ventasRepo.sincronizarPendientes()
+    expect(otra).toBe(0)
+  })
+
+  it('marcarImpreso actualiza el flag', async () => {
+    const venta = (await data.ventasRepo.listarDelDia()).find(
+      (v) => v.recibo === 'A-0042',
+    )!
+    expect(venta.impreso).toBe(true)
+
+    const sinPrint = await data.ventasRepo.marcarImpreso(venta.id, false)
+    expect(sinPrint.impreso).toBe(false)
+
+    const conPrint = await data.ventasRepo.marcarImpreso(venta.id, true)
+    expect(conPrint.impreso).toBe(true)
+  })
 })

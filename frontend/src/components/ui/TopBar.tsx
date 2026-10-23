@@ -1,13 +1,15 @@
 import type { HTMLAttributes } from 'react'
+import type { ConnectionKind } from '../../hooks/useAppStatus'
 import { cn } from '../../lib/cn'
 import { Icon } from './Icon'
 import { IconButton } from './IconButton'
 
 type TopBarMainProps = {
   variant?: 'main'
-  online: boolean
+  connectionKind: ConnectionKind
   printerConnected: boolean
-  pendingCount: number
+  /** Si es `undefined` o 0, no se muestra el chip. */
+  pendingCount: number | undefined
   onSettings: () => void
 } & Omit<HTMLAttributes<HTMLElement>, 'children'>
 
@@ -21,6 +23,20 @@ export type TopBarProps = TopBarMainProps | TopBarStackedProps
 
 const barBase =
   'flex h-topbar shrink-0 items-center border-b border-borde bg-superficie'
+
+const connectionCopy: Record<
+  ConnectionKind,
+  { label: string; icon: string; tone: 'exito' | 'pendiente' }
+> = {
+  offline: { label: 'Sin conexión', icon: 'cloud_off', tone: 'pendiente' },
+  online: { label: 'En línea', icon: 'cloud_done', tone: 'exito' },
+  pending: { label: 'En línea', icon: 'cloud_upload', tone: 'pendiente' },
+  sincronizado: {
+    label: 'Sincronizado',
+    icon: 'cloud_done',
+    tone: 'exito',
+  },
+}
 
 export function TopBar(props: TopBarProps) {
   if (props.variant === 'stacked') {
@@ -42,7 +58,7 @@ export function TopBar(props: TopBarProps) {
   }
 
   const {
-    online,
+    connectionKind,
     printerConnected,
     pendingCount,
     onSettings,
@@ -50,6 +66,8 @@ export function TopBar(props: TopBarProps) {
     variant: _variant,
     ...rest
   } = props
+
+  const connection = connectionCopy[connectionKind]
 
   return (
     <header
@@ -64,17 +82,11 @@ export function TopBar(props: TopBarProps) {
           <span
             className={cn(
               'inline-flex items-center gap-1',
-              online ? 'text-exito' : 'text-pendiente',
+              connection.tone === 'exito' ? 'text-exito' : 'text-pendiente',
             )}
           >
-            <span
-              className={cn(
-                'size-2 shrink-0 rounded-full',
-                online ? 'bg-exito' : 'bg-pendiente',
-              )}
-              aria-hidden
-            />
-            {online ? 'En línea' : 'Sin conexión'}
+            <Icon name={connection.icon} size={14} />
+            {connection.label}
           </span>
           <span
             className={cn(
@@ -92,7 +104,7 @@ export function TopBar(props: TopBarProps) {
       </div>
 
       <div className="flex shrink-0 items-center gap-1">
-        {pendingCount > 0 ? (
+        {pendingCount != null && pendingCount > 0 ? (
           <span className="inline-flex h-9 items-center gap-1.5 rounded-pill bg-pendiente-fondo px-2.5 text-caption font-black text-pendiente">
             <Icon name="cloud_upload" size={20} />
             {pendingCount} pendientes

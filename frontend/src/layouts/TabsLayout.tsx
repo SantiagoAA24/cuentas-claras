@@ -6,14 +6,15 @@ import { TopBar } from '../components/ui/TopBar'
 import { useAppStatus } from '../hooks/useAppStatus'
 
 export function TabsLayout() {
-  const { online, printerConnected, pendingCount } = useAppStatus()
+  const { online, connectionKind, printerConnected, pendingCount } =
+    useAppStatus()
   const navigate = useNavigate()
   const location = useLocation()
 
   return (
     <div className="flex h-dvh flex-col bg-crema">
       <TopBar
-        online={online}
+        connectionKind={connectionKind}
         printerConnected={printerConnected}
         pendingCount={pendingCount}
         onSettings={() =>

@@ -93,6 +93,8 @@ export function VenderPage() {
           bloqueado={cobro.bloqueado}
           submitting={cobro.submitting}
           venta={cobro.venta}
+          printStatus={cobro.printStatus}
+          retrying={cobro.retrying}
           onCobrarConImpresion={() =>
             void cobro.cobrar(true, registradaPor, handleRegistrada)
           }
@@ -100,6 +102,8 @@ export function VenderPage() {
             void cobro.cobrar(false, registradaPor, handleRegistrada)
           }
           onNuevaVenta={cobro.closeCobro}
+          onReintentarImpresion={() => void cobro.reintentarImpresion()}
+          onContinuarSinImprimir={cobro.continuarSinImprimir}
         />
       ) : null}
     </div>

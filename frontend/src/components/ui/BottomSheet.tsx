@@ -20,6 +20,8 @@ export type BottomSheetProps = {
   footer?: ReactNode
   children: ReactNode
   className?: string
+  /** Clases del velo (p. ej. z-index al apilar sobre otra hoja). */
+  overlayClassName?: string
 }
 
 /**
@@ -35,6 +37,7 @@ export function BottomSheet({
   footer,
   children,
   className,
+  overlayClassName,
 }: BottomSheetProps) {
   const showHeader = title != null || showClose
 
@@ -48,7 +51,9 @@ export function BottomSheet({
       shouldScaleBackground={false}
     >
       <Drawer.Portal>
-        <Drawer.Overlay className="fixed inset-0 z-40 bg-scrim" />
+        <Drawer.Overlay
+          className={cn('fixed inset-0 z-40 bg-scrim', overlayClassName)}
+        />
         <Drawer.Content
           aria-describedby={undefined}
           className={cn(

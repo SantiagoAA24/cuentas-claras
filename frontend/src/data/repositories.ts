@@ -29,9 +29,31 @@ export interface VentasRepository {
   anular(id: string, input: AnularVentaInput): Promise<Venta>
   /** Peek del próximo recibo; no incrementa el consecutivo. */
   obtenerSiguienteConsecutivo(): Promise<string>
+  /** Ventas con `sincronizada === false` (incluye anuladas). */
+  contarPendientes(): Promise<number>
+  /**
+   * Marca pendientes como sincronizadas (stub local hasta el backend).
+   * @returns Cantidad sincronizada en esta corrida.
+   */
+  sincronizarPendientes(): Promise<number>
+  marcarImpreso(id: string, impreso: boolean): Promise<Venta>
 }
 
 export interface ConfiguracionRepository {
   obtener(): Promise<Configuracion>
   guardar(patch: GuardarConfiguracionInput): Promise<Configuracion>
+}
+
+/** Usuario autenticado (sin contraseña). */
+export type AuthUser = {
+  id: string
+  nombre: string
+  usuario: string
+}
+
+export interface AuthRepository {
+  /**
+   * Valida credenciales. Rechaza con CredencialesInvalidasError si fallan.
+   */
+  login(usuario: string, password: string): Promise<AuthUser>
 }

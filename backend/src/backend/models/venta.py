@@ -9,8 +9,8 @@ from sqlalchemy import (
     ForeignKey,
     Integer,
     Text,
-    UniqueConstraint,
     Uuid,
+    text,
 )
 from sqlmodel import Column, Field, Index, SQLModel
 
@@ -20,12 +20,6 @@ from backend.core.time import utcnow
 class Venta(SQLModel, table=True):
     __tablename__ = "ventas"
     __table_args__ = (
-        UniqueConstraint(
-            "negocio_id",
-            "prefijo",
-            "consecutivo",
-            name="uq_ventas_negocio_prefijo_consecutivo",
-        ),
         CheckConstraint(
             "medio_pago IN ('Efectivo', 'Nequi', 'Daviplata', 'Transferencia')",
             name="ck_ventas_medio_pago",
@@ -35,6 +29,14 @@ class Venta(SQLModel, table=True):
         Index("ix_ventas_negocio_seq", "negocio_id", "seq"),
         Index("ix_ventas_negocio_fecha", "negocio_id", "fecha"),
         Index("ix_ventas_negocio_dispositivo", "negocio_id", "dispositivo_id"),
+        Index(
+            "uq_ventas_negocio_prefijo_consecutivo_sin_conflicto",
+            "negocio_id",
+            "prefijo",
+            "consecutivo",
+            unique=True,
+            postgresql_where=text("conflicto_recibo = false"),
+        ),
     )
 
     id: UUID = Field(default_factory=uuid4, primary_key=True)
@@ -64,6 +66,10 @@ class Venta(SQLModel, table=True):
         sa_column=Column(BigInteger, nullable=True),
     )
     impreso: bool = Field(
+        default=False,
+        sa_column=Column(Boolean, nullable=False, server_default="false"),
+    )
+    conflicto_recibo: bool = Field(
         default=False,
         sa_column=Column(Boolean, nullable=False, server_default="false"),
     )

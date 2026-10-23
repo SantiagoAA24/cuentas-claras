@@ -52,6 +52,7 @@ def test_engine() -> Generator[Engine, None, None]:
             conn.execute(text(f'CREATE DATABASE "{TEST_DB_NAME}"'))
 
     engine = create_engine(TEST_DATABASE_URL)
+    SQLModel.metadata.drop_all(engine)
     SQLModel.metadata.create_all(engine)
 
     yield engine

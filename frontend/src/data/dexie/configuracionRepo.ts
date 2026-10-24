@@ -2,7 +2,11 @@ import type {
   Configuracion,
   GuardarConfiguracionInput,
 } from '../../domain/types'
-import { CONFIG_ID, type CuentasClarasDB } from '../../lib/db'
+import {
+  CONFIG_ID,
+  normalizarConfiguracion,
+  type CuentasClarasDB,
+} from '../../lib/db'
 import type { ConfiguracionRepository } from '../repositories'
 
 function sinId(row: Configuracion & { id: string }): Configuracion {
@@ -19,7 +23,7 @@ export function createConfiguracionRepo(
       if (!row) {
         throw new Error('No hay configuración')
       }
-      return structuredClone(sinId(row))
+      return structuredClone(normalizarConfiguracion(row))
     },
 
     async guardar(patch: GuardarConfiguracionInput): Promise<Configuracion> {
@@ -28,19 +32,52 @@ export function createConfiguracionRepo(
         if (!row) {
           throw new Error('No hay configuración')
         }
+        const config = normalizarConfiguracion(row)
 
         if (patch.negocio) {
-          Object.assign(row.negocio, patch.negocio)
+          Object.assign(config.negocio, patch.negocio)
         }
         if (patch.impresora === null) {
-          delete row.impresora
+          delete config.impresora
         } else if (patch.impresora !== undefined) {
-          row.impresora = { ...patch.impresora }
+          config.impresora = { ...patch.impresora }
         }
-        // dispositivo (prefijo / consecutivo) no se muta desde aquí
 
-        await database.configuracion.put(row)
-        return structuredClone(sinId(row))
+        const next = { id: CONFIG_ID, ...config }
+        await database.configuracion.put(next)
+        return structuredClone(sinId(next))
+      })
+    },
+
+    async guardarDispositivo(
+      dispositivo: Configuracion['dispositivo'],
+    ): Promise<Configuracion> {
+      return database.transaction('rw', database.configuracion, async () => {
+        const row = await database.configuracion.get(CONFIG_ID)
+        if (!row) {
+          throw new Error('No hay configuración')
+        }
+        const config = normalizarConfiguracion(row)
+        config.dispositivo = { ...dispositivo }
+        const next = { id: CONFIG_ID, ...config }
+        await database.configuracion.put(next)
+        return structuredClone(sinId(next))
+      })
+    },
+
+    async guardarSync(
+      patch: Partial<Configuracion['sync']>,
+    ): Promise<Configuracion> {
+      return database.transaction('rw', database.configuracion, async () => {
+        const row = await database.configuracion.get(CONFIG_ID)
+        if (!row) {
+          throw new Error('No hay configuración')
+        }
+        const config = normalizarConfiguracion(row)
+        config.sync = { ...config.sync, ...patch }
+        const next = { id: CONFIG_ID, ...config }
+        await database.configuracion.put(next)
+        return structuredClone(sinId(next))
       })
     },
   }

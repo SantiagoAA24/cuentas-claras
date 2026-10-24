@@ -138,13 +138,6 @@ export function createVentasRepo(database: CuentasClarasDB): VentasRepository {
       return database.colaSync.where('estado').equals('pendiente').count()
     },
 
-    /**
-     * Stub hasta el backend: la cola solo se llena; no drena.
-     */
-    async sincronizarPendientes(): Promise<number> {
-      return 0
-    },
-
     async marcarImpreso(id: string, impreso: boolean): Promise<Venta> {
       const row = await database.ventas.get(id)
       if (!row) {

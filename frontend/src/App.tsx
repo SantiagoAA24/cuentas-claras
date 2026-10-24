@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router'
 import { GuestOnly } from './app/GuestOnly'
 import { RequireAuth } from './app/RequireAuth'
+import { RequireSyncInicial } from './app/RequireSyncInicial'
 import { ROUTES } from './app/routes'
 import { AppShell } from './components/AppShell'
 import { LoginPage } from './features/auth/pages/LoginPage'
@@ -40,20 +41,25 @@ function App() {
       ) : null}
 
       <Route element={<RequireAuth />}>
-        <Route element={<AppShell />}>
-          <Route element={<TabsLayout />}>
-            <Route path={ROUTES.vender} element={<VenderPage />} />
-            <Route path={ROUTES.historial} element={<HistorialPage />} />
-            <Route path={ROUTES.productos} element={<ProductosPage />} />
-          </Route>
+        <Route element={<RequireSyncInicial />}>
+          <Route element={<AppShell />}>
+            <Route element={<TabsLayout />}>
+              <Route path={ROUTES.vender} element={<VenderPage />} />
+              <Route path={ROUTES.historial} element={<HistorialPage />} />
+              <Route path={ROUTES.productos} element={<ProductosPage />} />
+            </Route>
 
-          <Route element={<StackLayout />}>
-            <Route
-              path={`${ROUTES.historial}/:id`}
-              element={<DetalleVentaPage />}
-            />
-            <Route path={ROUTES.configuracion} element={<ConfiguracionPage />} />
-            <Route path={ROUTES.impresora} element={<ImpresoraPage />} />
+            <Route element={<StackLayout />}>
+              <Route
+                path={`${ROUTES.historial}/:id`}
+                element={<DetalleVentaPage />}
+              />
+              <Route
+                path={ROUTES.configuracion}
+                element={<ConfiguracionPage />}
+              />
+              <Route path={ROUTES.impresora} element={<ImpresoraPage />} />
+            </Route>
           </Route>
         </Route>
       </Route>

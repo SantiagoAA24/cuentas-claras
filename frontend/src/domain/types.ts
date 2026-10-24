@@ -42,6 +42,8 @@ export interface Venta {
   vueltas?: number
   impreso: boolean
   sincronizada: boolean
+  /** Conflicto de recibo detectado en el servidor (mismo prefijo+consecutivo). */
+  conflictoRecibo?: boolean
   anulada?: Anulacion
 }
 
@@ -52,8 +54,15 @@ export interface Configuracion {
     pieRecibo: string
   }
   dispositivo: {
+    /** UUID del dispositivo; vacío hasta el primer registro en el servidor. */
+    id: string
     prefijo: string
     ultimoConsecutivo: number
+  }
+  /** Estado de sincronización con el backend. */
+  sync: {
+    cursor: number
+    inicialCompleto: boolean
   }
   impresora?: {
     nombre: string

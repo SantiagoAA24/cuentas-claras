@@ -94,8 +94,13 @@ export const CONFIGURACION_SEED: Configuracion = {
     pieRecibo: '¡Gracias por su compra!',
   },
   dispositivo: {
+    id: '',
     prefijo: 'A',
     ultimoConsecutivo: 42,
+  },
+  sync: {
+    cursor: 0,
+    inicialCompleto: false,
   },
   impresora: {
     nombre: 'PT-210',

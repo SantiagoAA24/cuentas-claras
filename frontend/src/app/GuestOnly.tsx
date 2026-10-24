@@ -7,12 +7,13 @@ import { ROUTES } from './routes'
 export function GuestOnly() {
   const hydrated = useSessionHydrated()
   const user = useSessionStore((s) => s.user)
+  const accessToken = useSessionStore((s) => s.accessToken)
 
   if (!hydrated) {
     return null
   }
 
-  if (user) {
+  if (user && accessToken) {
     return <Navigate to={ROUTES.vender} replace />
   }
 

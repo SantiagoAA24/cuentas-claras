@@ -194,18 +194,16 @@ describe('ventasRepo (Dexie)', () => {
     })
     const config = await data.configuracionRepo.obtener()
     expect(config.negocio.nombre).toBe('Nuevo nombre')
-    expect(config.dispositivo).toEqual({ prefijo: 'A', ultimoConsecutivo: 42 })
+    expect(config.dispositivo).toEqual({
+      id: '',
+      prefijo: 'A',
+      ultimoConsecutivo: 42,
+    })
   })
 
   it('contarPendientes lee colaSync del seed', async () => {
     const n = await data.ventasRepo.contarPendientes()
     expect(n).toBe(2)
-  })
-
-  it('sincronizarPendientes es no-op hasta el backend', async () => {
-    const n = await data.ventasRepo.sincronizarPendientes()
-    expect(n).toBe(0)
-    expect(await data.ventasRepo.contarPendientes()).toBe(2)
   })
 
   it('marcarImpreso actualiza el flag', async () => {

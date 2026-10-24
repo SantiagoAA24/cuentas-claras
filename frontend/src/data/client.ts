@@ -1,4 +1,4 @@
-import { createAuthRepo } from './dexie/authRepo'
+import { createAuthRepo } from './authRepo'
 import { createConfiguracionRepo } from './dexie/configuracionRepo'
 import { createProductosRepo } from './dexie/productosRepo'
 import { createVentasRepo } from './dexie/ventasRepo'

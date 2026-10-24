@@ -23,8 +23,8 @@ export function LoginPage() {
     if (loading) return
     setLoading(true)
     try {
-      const user = await authRepo.login(usuario, password)
-      login(user)
+      const session = await authRepo.login(usuario, password)
+      login(session)
     } catch {
       setError(true)
     } finally {

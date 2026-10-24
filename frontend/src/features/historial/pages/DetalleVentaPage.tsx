@@ -11,6 +11,7 @@ import { ventasRepo } from '../../../data/client'
 import { useLiveQuery } from '../../../data/useLiveQuery'
 import type { MotivoAnulacion } from '../../../domain/types'
 import { formatAnuladaEn } from '../../../lib/format'
+import { syncVentasPendientes } from '../../../lib/sync'
 import { useSessionStore } from '../../../stores/sessionStore'
 import { AnularVentaSheet } from '../components/AnularVentaSheet'
 import { DetalleVentaEncabezado } from '../components/DetalleVentaEncabezado'
@@ -88,6 +89,7 @@ export function DetalleVentaPage() {
         por: anuladaPor,
       })
       setSheetOpen(false)
+      void syncVentasPendientes()
     } catch (err) {
       setAnularError(
         err instanceof Error ? err.message : 'No se pudo anular la venta',

@@ -6,6 +6,7 @@ import { ProductosListSkeleton } from '../../../components/ui/ProductosListSkele
 import { productosRepo } from '../../../data/client'
 import { useLiveQuery } from '../../../data/useLiveQuery'
 import type { Producto } from '../../../domain/types'
+import { syncVentasPendientes } from '../../../lib/sync'
 import {
   ProductoFormSheet,
   type ProductoFormDraft,
@@ -51,6 +52,7 @@ export function ProductosPage() {
     } else {
       await productosRepo.desactivar(producto.id)
     }
+    void syncVentasPendientes()
   }
 
   async function handleSave(draft: ProductoFormDraft) {
@@ -69,6 +71,7 @@ export function ProductosPage() {
         await productosRepo.crear(payload)
       }
       setSheetOpen(false)
+      void syncVentasPendientes()
     } finally {
       setSubmitting(false)
     }

@@ -38,9 +38,37 @@ export const CONFIGURACION_DEFAULT: Configuracion = {
     pieRecibo: '',
   },
   dispositivo: {
+    id: '',
     prefijo: 'A',
     ultimoConsecutivo: 0,
   },
+  sync: {
+    cursor: 0,
+    inicialCompleto: false,
+  },
+}
+
+/** Completa campos nuevos en filas Dexie antiguas. */
+export function normalizarConfiguracion(
+  raw: Partial<Configuracion> & { id?: string },
+): Configuracion {
+  return {
+    negocio: {
+      nombre: raw.negocio?.nombre ?? '',
+      documento: raw.negocio?.documento ?? '',
+      pieRecibo: raw.negocio?.pieRecibo ?? '',
+    },
+    dispositivo: {
+      id: raw.dispositivo?.id ?? '',
+      prefijo: raw.dispositivo?.prefijo ?? 'A',
+      ultimoConsecutivo: raw.dispositivo?.ultimoConsecutivo ?? 0,
+    },
+    sync: {
+      cursor: raw.sync?.cursor ?? 0,
+      inicialCompleto: raw.sync?.inicialCompleto ?? false,
+    },
+    ...(raw.impresora ? { impresora: { ...raw.impresora } } : {}),
+  }
 }
 
 /** Clave de calendario local YYYY-MM-DD. */
@@ -92,15 +120,22 @@ export const db = new CuentasClarasDB()
 
 async function ensureConfiguracion(database: CuentasClarasDB): Promise<void> {
   const existing = await database.configuracion.get(CONFIG_ID)
-  if (existing) return
-  await database.configuracion.put({
-    id: CONFIG_ID,
-    ...structuredClone(CONFIGURACION_DEFAULT),
-  })
+  if (!existing) {
+    await database.configuracion.put({
+      id: CONFIG_ID,
+      ...structuredClone(CONFIGURACION_DEFAULT),
+    })
+    return
+  }
+  // Migración suave: rellenar dispositivo.id / sync si faltan.
+  const normalizada = normalizarConfiguracion(existing)
+  await database.configuracion.put({ id: CONFIG_ID, ...normalizada })
 }
 
 async function seedIfEmptyDev(database: CuentasClarasDB): Promise<void> {
   if (!import.meta.env.DEV) return
+  // Con API real el catálogo/ventas vienen del pull; no sembrar cola fake.
+  if (import.meta.env.VITE_API_URL) return
 
   const [nProductos, nVentas] = await Promise.all([
     database.productos.count(),
@@ -133,7 +168,7 @@ async function seedIfEmptyDev(database: CuentasClarasDB): Promise<void> {
       await database.ventas.bulkPut(ventaRows)
       await database.configuracion.put({
         id: CONFIG_ID,
-        ...seed.configuracion,
+        ...normalizarConfiguracion(seed.configuracion),
       })
       if (colaEntries.length > 0) {
         await database.colaSync.bulkPut(colaEntries)

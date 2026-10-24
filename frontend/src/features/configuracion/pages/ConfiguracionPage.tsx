@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import { ROUTES } from '../../../app/routes'
 import { ConfiguracionSkeleton } from '../../../components/ui/ConfiguracionSkeleton'
 import { toast } from '../../../components/ui/Toast'
-import { configuracionRepo } from '../../../data/client'
+import { authRepo, configuracionRepo } from '../../../data/client'
 import { useLiveQuery } from '../../../data/useLiveQuery'
 import { imprimirPrueba, useImpresoraStore } from '../../../lib/impresora'
 import { useSessionStore } from '../../../stores/sessionStore'
@@ -18,6 +18,7 @@ export function ConfiguracionPage() {
   const navigate = useNavigate()
   const user = useSessionStore((s) => s.user)
   const logout = useSessionStore((s) => s.logout)
+  const refreshToken = useSessionStore((s) => s.refreshToken)
   const connected = useImpresoraStore((s) => s.connected)
   const deviceRuntime = useImpresoraStore((s) => s.device)
 
@@ -55,7 +56,8 @@ export function ConfiguracionPage() {
     }
   }
 
-  function handleCerrarSesion() {
+  async function handleCerrarSesion() {
+    await authRepo.cerrarSesion(refreshToken)
     logout()
     navigate(ROUTES.login, { replace: true })
   }
@@ -76,7 +78,9 @@ export function ConfiguracionPage() {
       <ConfigDispositivoSection dispositivo={config.dispositivo} />
       <ConfigCuentaSection
         nombre={user?.nombre ?? 'Usuario'}
-        onCerrarSesion={handleCerrarSesion}
+        onCerrarSesion={() => {
+          void handleCerrarSesion()
+        }}
       />
     </div>
   )

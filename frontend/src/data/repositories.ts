@@ -31,17 +31,18 @@ export interface VentasRepository {
   obtenerSiguienteConsecutivo(): Promise<string>
   /** Entradas pendientes en colaSync (outbox). */
   contarPendientes(): Promise<number>
-  /**
-   * Stub hasta el backend: no drena la cola; siempre retorna 0.
-   * @returns Cantidad sincronizada en esta corrida.
-   */
-  sincronizarPendientes(): Promise<number>
   marcarImpreso(id: string, impreso: boolean): Promise<Venta>
 }
 
 export interface ConfiguracionRepository {
   obtener(): Promise<Configuracion>
   guardar(patch: GuardarConfiguracionInput): Promise<Configuracion>
+  /** Actualiza id/prefijo/consecutivo del dispositivo (sync / registro). */
+  guardarDispositivo(
+    dispositivo: Configuracion['dispositivo'],
+  ): Promise<Configuracion>
+  /** Actualiza cursor / flag de sync inicial. */
+  guardarSync(patch: Partial<Configuracion['sync']>): Promise<Configuracion>
 }
 
 /** Usuario autenticado (sin contraseña). */
@@ -49,11 +50,20 @@ export type AuthUser = {
   id: string
   nombre: string
   usuario: string
+  negocioId: string
+}
+
+export type AuthSession = {
+  user: AuthUser
+  accessToken: string
+  refreshToken: string
 }
 
 export interface AuthRepository {
   /**
    * Valida credenciales. Rechaza con CredencialesInvalidasError si fallan.
    */
-  login(usuario: string, password: string): Promise<AuthUser>
+  login(usuario: string, password: string): Promise<AuthSession>
+  /** Invalida el refresh en el servidor (best-effort). */
+  cerrarSesion(refreshToken: string | null): Promise<void>
 }

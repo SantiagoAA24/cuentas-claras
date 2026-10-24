@@ -4,6 +4,7 @@ import {
   CONFIGURACION_DEFAULT,
   CuentasClarasDB,
   db as defaultDb,
+  normalizarConfiguracion,
   toVentaRow,
   type EntradaColaSync,
 } from '../../lib/db'
@@ -14,7 +15,7 @@ import type {
   ProductosRepository,
   VentasRepository,
 } from '../repositories'
-import { createAuthRepo } from './authRepo'
+import { createAuthRepo } from '../authRepo'
 import { createConfiguracionRepo } from './configuracionRepo'
 import { createProductosRepo } from './productosRepo'
 import { createVentasRepo } from './ventasRepo'
@@ -63,7 +64,7 @@ async function seedTestDb(database: CuentasClarasDB): Promise<void> {
       await database.ventas.bulkPut(ventaRows)
       await database.configuracion.put({
         id: CONFIG_ID,
-        ...seed.configuracion,
+        ...normalizarConfiguracion(seed.configuracion),
       })
       if (colaEntries.length > 0) {
         await database.colaSync.bulkPut(colaEntries)
